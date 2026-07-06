@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022, 2023, 2025, 2026 Ryuichi Yamada <ryuichi_ya220@outlook.jp>
+# SPDX-FileCopyrightText: 2022-2023, 2025-2026 Ryuichi Yamada <ryuichi_ya220@outlook.jp>
 # Tomohiro Hyakutake <tomhioo@outlook.jp>, 2019.
 # Fumiaki Okushi <fumiaki.okushi@gmail.com>, 2019, 2022.
 msgid ""
@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: kscreengenie\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-06-22 02:46+0000\n"
-"PO-Revision-Date: 2026-01-26 21:19+0900\n"
+"PO-Revision-Date: 2026-07-04 14:16+0900\n"
 "Last-Translator: Ryuichi Yamada <ryuichi_ya220@outlook.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
 "Language: ja\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
-"X-Generator: Lokalize 25.12.1\n"
+"X-Generator: Lokalize 26.04.2\n"
 
 #, kde-format
 msgctxt "translatable folder name"
@@ -96,6 +96,8 @@ msgstr "デスクトップ全体を撮影 (デフォルト)"
 msgid ""
 "When used with -f/--fullscreen, capture all screens scaled to the same size"
 msgstr ""
+"-f/--fullscreen と組み合わせて使用されたとき、同じサイズにスケールされたすべ"
+"てのスクリーンを撮影"
 
 #: src/CommandLineOptions.h:30
 #, kde-format
@@ -228,10 +230,9 @@ msgid "Open and edit existing screenshot file"
 msgstr "既存のスクリーンショットファイルを開き、編集する"
 
 #: src/CommandLineOptions.h:116
-#, fuzzy, kde-format
-#| msgid "Accept on click-and-release"
+#, kde-format
 msgid "Accept region selection on click-and-release"
-msgstr "クリック＆リリースで確定"
+msgstr "クリック＆リリースで領域の選択を確定"
 
 #: src/ExportManager.cpp:460
 #, kde-format
@@ -296,6 +297,8 @@ msgctxt "@info:shell"
 msgid ""
 "Failed to export video: Temporary file URL must be an existing local file"
 msgstr ""
+"動画のエクスポートに失敗しました: 一時ファイルの URL は既存のローカルファイル"
+"である必要があります"
 
 #: src/ExportManager.cpp:787
 #, kde-format
@@ -303,6 +306,8 @@ msgctxt "@info:shell"
 msgid ""
 "Failed to export video: Output file URL must be a valid URL with a file name"
 msgstr ""
+"動画のエクスポートに失敗しました: 出力ファイルの URL はファイル名を含む有効"
+"な URL である必要があります。"
 
 #: src/ExportManager.cpp:873
 #, kde-format
@@ -319,49 +324,49 @@ msgstr "印刷に失敗しました。プリンタの初期化に失敗しまし
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Day (1–31)"
-msgstr ""
+msgstr "日 (1–31)"
 
 #: src/ExportManager.cpp:919
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Day (01–31)"
-msgstr ""
+msgstr "日 (01–31)"
 
 #: src/ExportManager.cpp:920
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Day (short name)"
-msgstr ""
+msgstr "日 (短い名前)"
 
 #: src/ExportManager.cpp:921
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Day (long name)"
-msgstr ""
+msgstr "日 (長い名前)"
 
 #: src/ExportManager.cpp:922
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Month (1–12)"
-msgstr ""
+msgstr "月 (1–12)"
 
 #: src/ExportManager.cpp:923
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Month (01–12)"
-msgstr ""
+msgstr "月 (01–12)"
 
 #: src/ExportManager.cpp:924
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Month (short name)"
-msgstr ""
+msgstr "月 (短い名前)"
 
 #: src/ExportManager.cpp:925
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Month (long name)"
-msgstr ""
+msgstr "月 (長い名前)"
 
 #: src/ExportManager.cpp:926
 #, kde-format
@@ -379,109 +384,109 @@ msgstr "年 (4桁)"
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Hour (0–23)"
-msgstr ""
+msgstr "時 (0–23)"
 
 #: src/ExportManager.cpp:929
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Hour (00–23)"
-msgstr ""
+msgstr "時 (00–23)"
 
 #: src/ExportManager.cpp:930
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Hour (1–12)"
-msgstr ""
+msgstr "時 (1–12)"
 
 #: src/ExportManager.cpp:931
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Hour (01–12)"
-msgstr ""
+msgstr "時 (01–12)"
 
 #: src/ExportManager.cpp:932
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Minute (0–59)"
-msgstr ""
+msgstr "分 (0–59)"
 
 #: src/ExportManager.cpp:933
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Minute (00–59)"
-msgstr ""
+msgstr "分 (00–59)"
 
 #: src/ExportManager.cpp:934
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Second (0–59)"
-msgstr ""
+msgstr "秒 (0–59)"
 
 #: src/ExportManager.cpp:935
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Second (00–59)"
-msgstr ""
+msgstr "秒 (00–59)"
 
 #: src/ExportManager.cpp:936
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Millisecond (0–999)"
-msgstr ""
+msgstr "ミリ秒 (0–999)"
 
 #: src/ExportManager.cpp:938
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Millisecond (000–999)"
-msgstr ""
+msgstr "ミリ秒 (000–999)"
 
 #: src/ExportManager.cpp:939
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "AM/PM"
-msgstr ""
+msgstr "午前/午後 (大文字)"
 
 #: src/ExportManager.cpp:941
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "am/pm"
-msgstr ""
+msgstr "午前/午後 (小文字)"
 
 #: src/ExportManager.cpp:943
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "AM/PM or am/pm (localized)"
-msgstr ""
+msgstr "午前/午後"
 
 #: src/ExportManager.cpp:945
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Timezone (short name)"
-msgstr ""
+msgstr "タイムゾーン (短い名前)"
 
 #: src/ExportManager.cpp:946
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Timezone offset (±0000)"
-msgstr ""
+msgstr "タイムゾーンのオフセット (±0000)"
 
 #: src/ExportManager.cpp:947
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Timezone offset (±00:00)"
-msgstr ""
+msgstr "タイムゾーンのオフセット (±00:00)"
 
 #: src/ExportManager.cpp:948
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Timezone (long name)"
-msgstr ""
+msgstr "タイムゾーン (長い名前)"
 
 #: src/ExportManager.cpp:949
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Seconds since the Unix epoch"
-msgstr ""
+msgstr "Unix 紀元からの秒数"
 
 #: src/ExportManager.cpp:950
 #, kde-format
@@ -493,7 +498,7 @@ msgstr "ウィンドウのタイトル"
 #, kde-format
 msgctxt "filename placeholder description"
 msgid "Sequential numbering, padded by inserting additional '#' characters"
-msgstr ""
+msgstr "連番 (山括弧内の '#' の数が最低の桁数になります)"
 
 #: src/Gui/AcceptAction.qml:9
 #, kde-format
@@ -519,7 +524,7 @@ msgstr[0] "%1ピクセル"
 #: src/Gui/AnnotationOptionsToolBarContents.qml:93
 #, kde-format
 msgid "Stroke Width"
-msgstr "線の大きさ"
+msgstr "線の太さ"
 
 #: src/Gui/AnnotationOptionsToolBarContents.qml:126
 #, kde-format
@@ -875,7 +880,7 @@ msgstr "エクスポート"
 #: src/Gui/ExportMenu.cpp:48
 #, kde-format
 msgid "Open Default Screenshots Folder"
-msgstr "既定のスクリーンショットフォルダを開く"
+msgstr "デフォルトのスクリーンショットフォルダを開く"
 
 #: src/Gui/ExportMenu.cpp:134
 #, kde-format
@@ -892,7 +897,7 @@ msgstr "共有"
 #, kde-format
 msgctxt "@action:menu"
 msgid "Extract Text by Language"
-msgstr ""
+msgstr "言語を指定して抽出"
 
 #: src/Gui/ExportMenu.cpp:295
 #, kde-format
@@ -1206,7 +1211,7 @@ msgstr "スクリーンショットの撮影後:"
 #: src/Gui/SettingsDialog/GeneralOptions.ui:71
 #, kde-format
 msgid "Save file to default folder"
-msgstr "画像を既定のフォルダーに保存する"
+msgstr "画像をデフォルトのフォルダーに保存する"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_clipboardGroup)
 #: src/Gui/SettingsDialog/GeneralOptions.ui:82
@@ -1324,13 +1329,13 @@ msgstr "Spectacle が閉じられるまで"
 #: src/Gui/SettingsDialog/GeneralOptions.ui:261
 #, kde-format
 msgid "Text Recognition (OCR)"
-msgstr ""
+msgstr "テキスト認識 (OCR)"
 
 #. i18n: ectx: property (text), widget (QLabel, ocrLanguageLabel)
 #: src/Gui/SettingsDialog/GeneralOptions.ui:268
 #, kde-format
 msgid "Languages for OCR:"
-msgstr ""
+msgstr "OCR で使用する言語:"
 
 #. i18n: ectx: property (text), widget (QLabel, closeAfterOcrLabel)
 #: src/Gui/SettingsDialog/GeneralOptions.ui:306
@@ -1344,7 +1349,7 @@ msgstr "テキスト抽出:"
 #: src/Gui/SettingsDialog/spectacle.kcfg:38
 #, kde-format
 msgid "Close after extraction (skips auto-save)"
-msgstr ""
+msgstr "抽出後に閉じる (自動保存をスキップ)"
 
 #. i18n: ectx: property (toolTip), widget (QLabel, closeAfterOcrInfo)
 #: src/Gui/SettingsDialog/GeneralOptions.ui:334
@@ -1352,7 +1357,7 @@ msgstr ""
 msgid ""
 "Spectacle will close after text extraction and automatic saving will be "
 "skipped."
-msgstr ""
+msgstr "Spectacle はテキストの抽出後に閉じ、自動保存はスキップされます。"
 
 #. i18n: ectx: property (text), widget (QLabel, ocrUnavailableLabel)
 #: src/Gui/SettingsDialog/GeneralOptions.ui:395
@@ -1424,8 +1429,8 @@ msgid ""
 "You can use the following placeholders in the filename, which will be "
 "replaced with actual text when the file is saved:"
 msgstr ""
-"ファイル名には次のプレースホルダーが利用可能です。保存されるときは実際の文字"
-"に置き換えられます:"
+"ファイル名には次のプレースホルダーが利用可能です。保存されるときは実際のテキ"
+"ストに置き換えられます:"
 
 #: src/Gui/SettingsDialog/SaveOptionsUtils.h:87
 #, kde-format
@@ -1524,7 +1529,7 @@ msgstr "最後に使用した矩形領域を記憶する"
 #: src/Gui/SettingsDialog/spectacle.kcfg:77
 #, kde-format
 msgid "Default languages for OCR text recognition"
-msgstr ""
+msgstr "OCR で使用するデフォルトの言語"
 
 #. i18n: ectx: label, entry (selectionRect), group (GuiConfig)
 #: src/Gui/SettingsDialog/spectacle.kcfg:83
@@ -1586,7 +1591,7 @@ msgstr "遅延"
 #: src/Gui/SettingsDialog/spectacle.kcfg:172
 #, kde-format
 msgid "Default filename"
-msgstr "既定のファイル名"
+msgstr "デフォルトのファイル名"
 
 #. i18n: ectx: label, entry (imageCompressionQuality), group (ImageSave)
 #: src/Gui/SettingsDialog/spectacle.kcfg:143
@@ -1598,7 +1603,7 @@ msgstr "非可逆圧縮フォーマットの圧縮品質"
 #: src/Gui/SettingsDialog/spectacle.kcfg:151
 #, kde-format
 msgid "Default save image format"
-msgstr "既定の保存画像フォーマット"
+msgstr "デフォルトの保存画像フォーマット"
 
 #. i18n: ectx: label, entry (imageFilenameTemplate), group (ImageSave)
 #: src/Gui/SettingsDialog/spectacle.kcfg:155
@@ -1626,7 +1631,7 @@ msgstr "「名前をつけて保存」で使用されるパス"
 #: src/Gui/SettingsDialog/spectacle.kcfg:189
 #, kde-format
 msgid "Default video format"
-msgstr "既定の動画フォーマット"
+msgstr "デフォルトの動画フォーマット"
 
 #. i18n: ectx: label, entry (videoFilenameTemplate), group (VideoSave)
 #: src/Gui/SettingsDialog/spectacle.kcfg:194
@@ -1871,28 +1876,22 @@ msgid "Orientation and Script Detection"
 msgstr ""
 
 #: src/Platforms/ImagePlatformKWin.cpp:143
-#, fuzzy, kde-format
-#| msgctxt "@info"
-#| msgid "Bad width for KWin screenshot: %1"
+#, kde-format
 msgctxt "@info, %1 is the width"
 msgid "Bad width for KWin screenshot: %1"
-msgstr "不正な幅の KWin スクリーンショット: %1"
+msgstr "KWin スクリーンショットとして不正な幅 : %1"
 
 #: src/Platforms/ImagePlatformKWin.cpp:148
-#, fuzzy, kde-format
-#| msgctxt "@info"
-#| msgid "Bad height for KWin screenshot: %1"
+#, kde-format
 msgctxt "@info, %1 is the height"
 msgid "Bad height for KWin screenshot: %1"
-msgstr "不正な高さの KWin スクリーンショット: %1"
+msgstr "KWin スクリーンショットとして不正な高さ: %1"
 
 #: src/Platforms/ImagePlatformKWin.cpp:159
-#, fuzzy, kde-format
-#| msgctxt "@info"
-#| msgid "Bad format for KWin screenshot: %1"
+#, kde-format
 msgctxt "@info, %1 is a file format like 'png', 'jpg'"
 msgid "Bad format for KWin screenshot: %1"
-msgstr "不正な形式の KWin スクリーンショット: %1"
+msgstr "KWin スクリーンショットとして不正な形式: %1"
 
 #: src/Platforms/ImagePlatformKWin.cpp:177
 #, kde-format
@@ -1901,12 +1900,10 @@ msgid "Could not open file descriptor for reading KWin screenshot."
 msgstr ""
 
 #: src/Platforms/ImagePlatformKWin.cpp:245
-#, fuzzy, kde-format
-#| msgctxt "@info"
-#| msgid "Bad width for KWin screenshot: %1"
+#, kde-format
 msgctxt "@info, %1 is an error code"
 msgid "pipe2() failed for KWin screenshot: %1"
-msgstr "不正な幅の KWin スクリーンショット: %1"
+msgstr "KWin スクリーンショットのための pipe2() が失敗しました: %1"
 
 #: src/Platforms/ImagePlatformKWin.cpp:301
 #, kde-format
@@ -1985,12 +1982,10 @@ msgid "Failed to record: Output file URL is not a local file (%1)"
 msgstr ""
 
 #: src/Platforms/VideoPlatformWayland.cpp:370
-#, fuzzy, kde-format
-#| msgctxt "@info:shell"
-#| msgid "Failed to select screen: %1"
+#, kde-format
 msgctxt "@info:shell, %1 is a directory path"
 msgid "Failed to record: Unable to create folder (%1)"
-msgstr "スクリーンの選択に失敗しました: %1"
+msgstr "録画に失敗しました: フォルダを作成できません (%1)"
 
 #: src/Platforms/VideoPlatformWayland.cpp:398
 #, kde-format
@@ -2278,38 +2273,37 @@ msgstr "バイナリデータを含む QR コードを発見しました。"
 #, kde-format
 msgctxt "@info"
 msgid "Text extraction failed"
-msgstr ""
+msgstr "テキストの抽出に失敗しました"
 
 #: src/SpectacleCore.cpp:573
 #, kde-format
 msgctxt "@info"
 msgid "No text found in the image"
-msgstr ""
+msgstr "テキストが画像の中に見つかりませんでした"
 
 #: src/SpectacleCore.cpp:577
 #, kde-format
 msgctxt "@info"
 msgid "Text extraction completed"
-msgstr ""
+msgstr "テキストの抽出が完了しました"
 
 #: src/SpectacleCore.cpp:585
 #, kde-format
 msgctxt "@info:notification title"
 msgid "Text Extracted"
-msgstr ""
+msgstr "テキストが抽出されました"
 
 #: src/SpectacleCore.cpp:604
 #, kde-format
 msgctxt "@info The variables are language names, e.g. 'English and German'"
 msgid "%1 and %2"
-msgstr ""
+msgstr "%1 と %2"
 
 #: src/SpectacleCore.cpp:609
-#, fuzzy, kde-kuit-format
-#| msgid "Copy image to clipboard"
+#, kde-kuit-format
 msgctxt "@info:notification"
 msgid "Text copied to clipboard.<nl/>Languages used: %1"
-msgstr "画像をクリップボードにコピー"
+msgstr "テキストがクリップボードにコピーされました。<nl/>使用された言語: %1"
 
 #: src/SpectacleCore.cpp:614
 #, kde-format
@@ -2321,29 +2315,25 @@ msgstr "テキストエディタで開く"
 #, kde-format
 msgctxt "@info"
 msgid "Please select a region before extracting text"
-msgstr ""
+msgstr "テキストを抽出する前に領域を選択してください"
 
 #: src/SpectacleCore.cpp:778
-#, fuzzy, kde-format
-#| msgctxt "@info"
-#| msgid "KWin Screencasting is not available."
+#, kde-format
 msgctxt "@info"
 msgid "OCR is not available."
-msgstr "KWin 画面録画は利用できません。"
+msgstr "OCR は利用できません。"
 
 #: src/SpectacleCore.cpp:784
-#, fuzzy, kde-format
-#| msgctxt "@info"
-#| msgid "KWin Screencasting is not available."
+#, kde-format
 msgctxt "@info"
 msgid "No screenshot available."
-msgstr "KWin 画面録画は利用できません。"
+msgstr "利用可能なスクリーンショットはありません。"
 
 #: src/SpectacleCore.cpp:788
 #, kde-format
 msgctxt "@info"
 msgid "Extracting text from image..."
-msgstr ""
+msgstr "画像からテキストを抽出しています..."
 
 #: src/SpectacleCore.cpp:1041
 #, kde-format
@@ -2351,6 +2341,7 @@ msgctxt "@info:shell"
 msgid ""
 "--scaled is only allowed together with -f/--fullscreen and will be ignored"
 msgstr ""
+"--scaled は -f/--fullscreen と組み合わせて使用されたときのみ適用されます"
 
 #: src/SpectacleCore.cpp:1056
 #, kde-format
