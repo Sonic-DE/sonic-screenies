@@ -125,6 +125,7 @@ Comment[hu]=Képernyőmentések és felvételek készítése
 Comment[ia]=Prende capturas de schermo e registrationes de schermo
 Comment[is]=Taktu skjámyndir og skjáupptökur
 Comment[it]=Cattura schermate e registra lo schermo
+Comment[ja]=スクリーンショットと画面録画を撮影
 Comment[ka]=აიღეთ ეკრანის ანაბეჭდები და ჩაიწერეთ ეკრანი
 Comment[ko]=스크린샷을 찍고 화면 녹화하기
 Comment[lt]=Daryti ekrano kopijas ir filmuoti ekraną
