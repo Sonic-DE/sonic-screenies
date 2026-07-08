@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: kscreengenie\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-06-22 02:46+0000\n"
-"PO-Revision-Date: 2026-07-04 14:16+0900\n"
+"PO-Revision-Date: 2026-07-06 23:34+0900\n"
 "Last-Translator: Ryuichi Yamada <ryuichi_ya220@outlook.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
 "Language: ja\n"
@@ -1211,7 +1211,7 @@ msgstr "スクリーンショットの撮影後:"
 #: src/Gui/SettingsDialog/GeneralOptions.ui:71
 #, kde-format
 msgid "Save file to default folder"
-msgstr "画像をデフォルトのフォルダーに保存する"
+msgstr "画像をデフォルトのフォルダに保存する"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_clipboardGroup)
 #: src/Gui/SettingsDialog/GeneralOptions.ui:82
@@ -1429,7 +1429,7 @@ msgid ""
 "You can use the following placeholders in the filename, which will be "
 "replaced with actual text when the file is saved:"
 msgstr ""
-"ファイル名には次のプレースホルダーが利用可能です。保存されるときは実際のテキ"
+"ファイル名には次のプレースホルダーが利用可能です。保存されるときに実際のテキ"
 "ストに置き換えられます:"
 
 #: src/Gui/SettingsDialog/SaveOptionsUtils.h:87
@@ -1863,17 +1863,17 @@ msgstr ""
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Orientation and Script Detection"
-msgstr ""
+msgstr "向き/文字検出"
 
 #: src/OcrManager.cpp:619
 #, kde-format
 msgid "Math/Equation Detection"
-msgstr ""
+msgstr "数式検出"
 
 #: src/OcrManager.cpp:622
 #, kde-format
 msgid "Orientation and Script Detection"
-msgstr ""
+msgstr "向き/文字検出"
 
 #: src/Platforms/ImagePlatformKWin.cpp:143
 #, kde-format
@@ -1898,6 +1898,8 @@ msgstr "KWin スクリーンショットとして不正な形式: %1"
 msgctxt "@info"
 msgid "Could not open file descriptor for reading KWin screenshot."
 msgstr ""
+"KWin スクリーンショットを読み込むためにファイル記述子を開くことができませんで"
+"した。"
 
 #: src/Platforms/ImagePlatformKWin.cpp:245
 #, kde-format
@@ -1912,6 +1914,8 @@ msgid ""
 "KWin screenshot request failed:\n"
 "%1"
 msgstr ""
+"KWin スクリーンショットの要求が失敗しました:\n"
+"%1"
 
 #: src/Platforms/ImagePlatformKWin.cpp:303
 #, kde-format
@@ -1920,12 +1924,14 @@ msgid ""
 "Potentially relevant information:\n"
 "%1"
 msgstr ""
+"関連する可能性のある情報:\n"
+"%1"
 
 #: src/Platforms/ImagePlatformKWin.cpp:311
 #, kde-format
 msgctxt "@info"
 msgid "Unsupported KWin screenshot type metadata: %1"
-msgstr ""
+msgstr "未サポートの KWin スクリーンショットタイプのメタデータ: %1"
 
 #: src/Platforms/PlatformLoader.cpp:97
 #, kde-format
@@ -1943,7 +1949,7 @@ msgstr "KWin 画面録画は利用できません。"
 #, kde-format
 msgctxt "@info:shell"
 msgid "Failed to record: File URL is not a local file"
-msgstr ""
+msgstr "録画に失敗しました: ファイルの URL はローカルファイルを示していません"
 
 #: src/Platforms/VideoPlatformWayland.cpp:274
 #, kde-format
@@ -1952,6 +1958,8 @@ msgid ""
 "The stream closed because the target screen changed in a way that disrupted "
 "the recording."
 msgstr ""
+"ターゲットのスクリーンが録画を妨げる形で変更されたため、ストリームが閉じられ"
+"ました。"
 
 #: src/Platforms/VideoPlatformWayland.cpp:278
 #, kde-format
@@ -1960,6 +1968,8 @@ msgid ""
 "The stream closed because the target window changed in a way that disrupted "
 "the recording."
 msgstr ""
+"ターゲットのウィンドウが録画を妨げる形で変更されたため、ストリームが閉じられ"
+"ました。"
 
 #: src/Platforms/VideoPlatformWayland.cpp:282
 #, kde-format
@@ -1968,18 +1978,24 @@ msgid ""
 "The stream closed because a screen containing the target region changed in a "
 "way that disrupted the recording."
 msgstr ""
+"ターゲットの領域を含むスクリーンが録画を妨げる形で変更されたため、ストリーム"
+"が閉じられました。"
 
 #: src/Platforms/VideoPlatformWayland.cpp:298
 #, kde-format
 msgctxt "@info:shell, %1 is the temporary URL"
 msgid "Failed to record: Temporary file URL is not a local file (%1)"
 msgstr ""
+"録画に失敗しました: 一時ファイルの URL はローカルファイルを示していません "
+"(%1)"
 
 #: src/Platforms/VideoPlatformWayland.cpp:309
 #, kde-format
 msgctxt "@info:shell, %1 is the output file URL"
 msgid "Failed to record: Output file URL is not a local file (%1)"
 msgstr ""
+"録画に失敗しました: 出力ファイルの URL はローカルファイルを示していません "
+"(%1)"
 
 #: src/Platforms/VideoPlatformWayland.cpp:370
 #, kde-format
@@ -2131,6 +2147,8 @@ msgstr "Spectacle は録画中です"
 msgctxt "recording notification message without shortcut"
 msgid "To finish the recording, click the pulsing red System Tray icon."
 msgstr ""
+"録画を終了するには、点滅する赤いシステムトレイアイコンをクリックしてくださ"
+"い。"
 
 #: src/SpectacleCore.cpp:327
 #, kde-kuit-format
@@ -2139,6 +2157,8 @@ msgid ""
 "To finish the recording, click the pulsing red System Tray icon or press "
 "<shortcut>%1</shortcut>."
 msgstr ""
+"録画を終了するには、点滅する赤いシステムトレイアイコンをクリックするか "
+"<shortcut>%1</shortcut> を押してください。"
 
 #: src/SpectacleCore.cpp:344
 #, kde-format
