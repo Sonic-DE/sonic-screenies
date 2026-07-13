@@ -1078,7 +1078,7 @@ msgstr "新建录屏"
 #: src/Gui/RecordingSettingsColumn.qml:17
 #, kde-format
 msgid "Show the mouse cursor in the screen recording."
-msgstr ""
+msgstr "屏幕录像包含鼠标光标。"
 
 #: src/Gui/RecordingView.qml:85
 #, kde-format
