@@ -141,6 +141,32 @@ OptionsMenu::OptionsMenu(QWidget *parent)
         videoIncludeMousePointerAction->setChecked(Settings::videoIncludePointer());
     });
 
+    auto updateAudioEnabled = [](QAction* action) {
+        action->setEnabled(VideoPlatform::formatSupportsAudio(SpectacleCore::instance()->videoPlatform()->effectivePreferredFormat()));
+    };
+    auto microphoneAction = addAction(i18nc("@option:check for recordings", "Record microphone"));
+    microphoneAction->setCheckable(true);
+    microphoneAction->setChecked(Settings::videoRecordMicrophone());
+    updateAudioEnabled(microphoneAction);
+    connect(microphoneAction, &QAction::toggled, Settings::self(), &Settings::setVideoRecordMicrophone);
+    connect(Settings::self(), &Settings::videoRecordMicrophoneChanged, microphoneAction, [microphoneAction] {
+        microphoneAction->setChecked(Settings::videoRecordMicrophone());
+    });
+
+    auto systemAudioAction = addAction(i18nc("@option:check for recordings", "Record system audio"));
+    systemAudioAction->setCheckable(true);
+    systemAudioAction->setChecked(Settings::videoRecordSystemAudio());
+    updateAudioEnabled(systemAudioAction);
+    connect(systemAudioAction, &QAction::toggled, Settings::self(), &Settings::setVideoRecordSystemAudio);
+    connect(Settings::self(), &Settings::videoRecordSystemAudioChanged, systemAudioAction, [systemAudioAction] {
+        systemAudioAction->setChecked(Settings::videoRecordSystemAudio());
+    });
+    connect(SpectacleCore::instance()->videoPlatform(), &VideoPlatform::effectivePreferredFormatChanged, this,
+        [microphoneAction, systemAudioAction, updateAudioEnabled] {
+            updateAudioEnabled(microphoneAction);
+            updateAudioEnabled(systemAudioAction);
+        });
+
     addSeparator();
 
     addAction(KStandardActions::preferences(this, &OptionsMenu::showPreferencesDialog, this));

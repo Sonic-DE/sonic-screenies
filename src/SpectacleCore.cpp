@@ -12,17 +12,16 @@
 #include "ExportManager.h"
 #include "Geometry.h"
 #include "Gui/CaptureWindow.h"
+#include "Gui/InlineMessageModel.h"
 #include "Gui/Selection.h"
 #include "Gui/SelectionEditor.h"
 #include "Gui/SpectacleWindow.h"
-#include "Gui/InlineMessageModel.h"
 #include "ImageMetaData.h"
 #include "OcrManager.h"
 #include "Platforms/ImagePlatformXcb.h"
 #include "Platforms/PlatformLoader.h"
 #include "RecordingModeModel.h"
 #include "ShortcutActions.h"
-#include "PlasmaVersion.h"
 // generated
 #include "settings.h"
 
@@ -35,8 +34,6 @@
 #include <KStatusNotifierItem>
 #include <KWindowSystem>
 #include <KX11Extras>
-#include <LayerShellQt/Shell>
-#include <LayerShellQt/Window>
 
 #include <KLocalizedQmlContext>
 #include <QApplication>
@@ -136,26 +133,11 @@ SpectacleCore::SpectacleCore(QObject *parent)
             const auto captureWindows = CaptureWindow::instances();
             SpectacleWindow::setVisibilityForAll(QWindow::Hidden);
             for (auto captureWindow : captureWindows) {
-                // Destroy the QPlatformWindow so we can change the window behavior.
-                // The QPlatformWindow will be recreated when the window is shown again.
                 captureWindow->destroy();
                 captureWindow->setFlag(Qt::WindowTransparentForInput, true);
                 captureWindow->setFlag(Qt::WindowStaysOnTopHint, true);
-                if (auto window = LayerShellQt::Window::get(captureWindow)) {
-                    using namespace LayerShellQt;
-                    window->setCloseOnDismissed(true);
-                    window->setLayer(Window::LayerOverlay);
-                    auto anchors = Window::Anchors::fromInt(Window::AnchorTop | Window::AnchorBottom | Window::AnchorLeft | Window::AnchorRight);
-                    window->setAnchors(anchors);
-                    // -1 means this window should not make way for other surfaces such as panels.
-                    window->setExclusiveZone(-1);
-                    window->setKeyboardInteractivity(Window::KeyboardInteractivityNone);
-                    window->setScreen(captureWindow->screenToFollow());
-                }
             }
             SpectacleWindow::setVisibilityForAll(QWindow::FullScreen);
-            // deleteWindows();
-            // showViewerIfGuiMode(true);
             bool includePointer = m_cliOptions[CommandLineOptions::Pointer];
             includePointer |= m_startMode != StartMode::Background && Settings::videoIncludePointer();
             ExportManager::instance()->updateTimestamp();
@@ -1174,18 +1156,10 @@ void SpectacleCore::takeNewScreenshot(ImagePlatform::GrabMode grabMode, int time
     timeout = qMax(0, timeout);
     const bool noDelay = timeout == 0;
 
-    if (PlasmaVersion::get() < PlasmaVersion::check(5, 27, 4) && KX11Extras::compositingActive()) {
-        // when compositing is enabled, we need to give it enough time for the window
-        // to disappear and all the effects are complete before we take the shot. there's
-        // no way of knowing how long the disappearing effects take, but as per default
-        // settings (and unless the user has set an extremely slow effect), 200
-        // milliseconds is a good amount of wait time.
-        timeout = qMax(timeout, 200);
-    } else if (qobject_cast<ImagePlatformXcb *>(m_imagePlatform.get())) {
-        // X11 compositors (which may or may not be kwin) require small delay for
-        // window to disappear.
-        // Also, minimum 50ms delay is needed to prevent segfaults from xcb function
-        // calls that don't get replies fast enough.
+    if (qobject_cast<ImagePlatformXcb*>(m_imagePlatform.get())) {
+        // X11 compositors require a small delay for window hide animations to settle.
+        // A 50 ms minimum also avoids segfaults from xcb function calls that don't get
+        // replies fast enough.
         timeout = qMax(timeout, 50);
     }
 
@@ -1548,7 +1522,9 @@ void SpectacleCore::startRecording(VideoPlatform::RecordingMode mode, bool withP
 
 void SpectacleCore::finishRecording()
 {
-    Q_ASSERT(m_videoPlatform->isRecording());
+    if (!m_videoPlatform->isRecording()) {
+        return;
+    }
     m_videoPlatform->finishRecording();
 }
 

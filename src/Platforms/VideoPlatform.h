@@ -25,8 +25,10 @@ class VideoPlatform : public QObject
 
     Q_PROPERTY(RecordingModes supportedRecordingModes READ supportedRecordingModes NOTIFY supportedRecordingModesChanged)
     Q_PROPERTY(Formats supportedFormats READ supportedFormats NOTIFY supportedFormatsChanged)
+    Q_PROPERTY(Format effectivePreferredFormat READ effectivePreferredFormat NOTIFY effectivePreferredFormatChanged)
     Q_PROPERTY(qint64 recordedTime READ recordedTime NOTIFY recordedTimeChanged)
     Q_PROPERTY(bool isRecording READ isRecording NOTIFY recordingStateChanged)
+    Q_PROPERTY(bool isBusy READ isBusy NOTIFY busyChanged)
     Q_PROPERTY(RecordingState recordingState READ recordingState NOTIFY recordingStateChanged)
 
 public:
@@ -124,8 +126,13 @@ public:
     static Format formatForExtension(const QString &extension);
     Q_INVOKABLE static Format formatForPath(const QString &path);
 
+    Q_INVOKABLE static bool formatSupportsAudio(Format format);
+
     bool isRecording() const;
+    virtual bool isBusy() const;
     qint64 recordedTime() const;
+
+    virtual Format effectivePreferredFormat() const;
 
     RecordingState recordingState() const;
 
@@ -134,6 +141,9 @@ public:
 protected:
     void setRecordingState(RecordingState state);
     void setRecordingMode(RecordingMode mode);
+    void setSupportedRecordingModes(RecordingModes modes);
+    void setSupportedFormats(Formats formats);
+    void setEffectivePreferredFormat(Format format);
     void timerEvent(QTimerEvent *event) override;
 
 public Q_SLOTS:
@@ -146,10 +156,12 @@ public Q_SLOTS:
 Q_SIGNALS:
     void supportedRecordingModesChanged();
     void supportedFormatsChanged();
+    void effectivePreferredFormatChanged();
     void recordingSaved(const QUrl &fileUrl);
     void recordingFailed(const QString &message);
     void recordingCanceled(const QString &message);
     void recordedTimeChanged();
+    void busyChanged();
     void recordingStateChanged(RecordingState state);
 
     /// Request a region from the platform agnostic selection editor
@@ -161,6 +173,9 @@ private:
     qint64 m_recordedTime = 0;
     RecordingState m_recordingState = RecordingState::NotRecording;
     RecordingMode m_recordingMode = RecordingMode::NoRecordingModes;
+    RecordingModes m_supportedRecordingModes = {};
+    Formats m_supportedFormats = {};
+    Format m_effectivePreferredFormat = NoFormat;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(VideoPlatform::RecordingModes)

@@ -25,6 +25,8 @@ VideoFormatModel::VideoFormatModel(QObject *parent)
 
 void VideoFormatModel::setFormats(VideoPlatform::Formats formats)
 {
+    const int oldCount = m_data.size();
+    QAbstractListModel::beginResetModel();
     m_data.clear();
     if (formats.testFlag(VideoPlatform::WebM_VP9)) {
         m_data.append({
@@ -54,7 +56,10 @@ void VideoFormatModel::setFormats(VideoPlatform::Formats formats)
             VideoPlatform::extensionForFormat(VideoPlatform::Gif),
         });
     }
-    Q_EMIT countChanged();
+    QAbstractListModel::endResetModel();
+    if (oldCount != m_data.size()) {
+        Q_EMIT countChanged();
+    }
 }
 
 int VideoFormatModel::indexOfFormat(VideoPlatform::Format format) const
@@ -93,7 +98,9 @@ QVariant VideoFormatModel::data(const QModelIndex &index, int role) const
 
 int VideoFormatModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent)
+    if (parent.isValid()) {
+        return 0;
+    }
     return m_data.size();
 }
 

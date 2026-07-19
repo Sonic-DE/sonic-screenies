@@ -55,5 +55,4 @@ private:
 
     QList<Item> m_data;
     QHash<int, QByteArray> m_roleNames;
-    const VideoPlatform::RecordingModes m_modes;
 };

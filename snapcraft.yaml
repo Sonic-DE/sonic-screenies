@@ -42,22 +42,25 @@ parts:
     build-packages:
       - libxcb-cursor-dev
       - libxcb-image0-dev
+      - libxcb-randr0-dev
       - libxcb-util0-dev
       - libxcb-xfixes0-dev
-      - libwayland-dev
-      - plasma-wayland-protocols
-      - wayland-scanner++
-      - libpipewire-0.3-dev
+      - libavcodec-dev
+      - libavformat-dev
+      - libavutil-dev
+      - libswscale-dev
+      - libpulse-dev
     stage-packages:
       - libxcb-image0
       - libxcb-cursor0
+      - libxcb-randr0
       - libxcb-util1
       - libxcb-xfixes0
-      - kipi-plugins-common
-      - kipi-plugins
-      - libwayland-client0
-      - plasma-wayland-protocols
-      - libpipewire-0.3-0
+      - libavcodec60
+      - libavformat60
+      - libavutil57
+      - libswscale6
+      - libpulse0
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DCMAKE_BUILD_TYPE=Release

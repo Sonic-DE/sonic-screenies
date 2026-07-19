@@ -166,10 +166,8 @@ QString CaptureModeModel::captureModeLabel(CaptureMode mode)
         return i18nc("@action in capture mode section", "Current Screen");
     case CaptureMode::ActiveWindow:
         return i18nc("@action in capture mode section", "Active Window");
-    case CaptureMode::WindowUnderCursor: {
-        auto wayland = qGuiApp->nativeInterface<QNativeInterface::QWaylandApplication>();
-        return wayland ? i18nc("@action in capture mode section", "Select Window") : i18nc("@action in capture mode section", "Window Under Cursor");
-    }
+    case CaptureMode::WindowUnderCursor:
+        return i18nc("@action in capture mode section", "Window Under Cursor");
     case CaptureMode::AllScreens:
         return i18nc("@action in capture mode section", "All Screens");
     case CaptureMode::FullScreen:

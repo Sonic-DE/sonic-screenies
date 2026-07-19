@@ -4,8 +4,6 @@
 
 #include "Geometry.h"
 
-#include <KWindowSystem>
-
 #include <QDebug>
 #include <QGuiApplication>
 #include <QScreen>
@@ -52,27 +50,21 @@ qreal Geometry::dprFloor(qreal value, qreal dpr)
 
 qreal Geometry::mapFromPlatformValue(qreal value, qreal dpr)
 {
-    if (KWindowSystem::isPlatformX11()) {
-        return value / dpr;
-    }
-    return value;
+    return value / dpr;
 }
 
 QPointF Geometry::mapFromPlatformPoint(const QPointF &point, qreal dpr)
 {
-    if (KWindowSystem::isPlatformX11()) {
-        return point / dpr;
-    }
-    return point;
+    return point / dpr;
 }
 
 QRectF Geometry::mapFromPlatformRect(const QRectF &rect, qreal dpr)
 {
-    if (rect.isEmpty() || KWindowSystem::isPlatformWayland()) {
+    if (rect.isEmpty()) {
         return rect;
     }
 
-    // Make the position scaled like Wayland.
+    // X11: position is in physical pixels; size is reported at DPR scale.
     return {rect.topLeft() / dpr, rect.size()};
 }
 
@@ -88,23 +80,17 @@ QRectF Geometry::logicalScreensRect()
 
 qreal Geometry::mapToPlatformValue(qreal value, qreal dpr)
 {
-    if (KWindowSystem::isPlatformX11()) {
-        return value * dpr;
-    }
-    return value;
+    return value * dpr;
 }
 
 QPointF Geometry::mapToPlatformPoint(const QPointF &point, qreal dpr)
 {
-    if (KWindowSystem::isPlatformX11()) {
-        return point * dpr;
-    }
-    return point;
+    return point * dpr;
 }
 
 QRectF Geometry::mapToPlatformRect(const QRectF &rect, qreal dpr)
 {
-    if (rect.isEmpty() || KWindowSystem::isPlatformWayland()) {
+    if (rect.isEmpty()) {
         return rect;
     }
     return {rect.topLeft() * dpr, rect.size()};

@@ -26,6 +26,8 @@ target_sources(spectacle PRIVATE
     ExportManager.cpp
     Geometry.cpp
     OcrManager.cpp
+    PlatformOutput.cpp
+    PlatformStartup.cpp
     Gui/CaptureWindow.cpp
     Gui/ExportMenu.cpp
     Gui/HelpMenu.cpp
@@ -48,39 +50,54 @@ target_sources(spectacle PRIVATE
     Gui/TextContextMenu.cpp
     Gui/ViewerWindow.cpp
     Main.cpp
-    PlasmaVersion.cpp
     Platforms/ImagePlatform.cpp
-    Platforms/ImagePlatformKWin.cpp
+    Platforms/ImagePlatformXcb.cpp
     Platforms/PlatformLoader.cpp
     Platforms/PlatformNull.cpp
-    Platforms/screencasting.cpp
     Platforms/VideoPlatform.cpp
-    Platforms/VideoPlatformWayland.cpp
+    Platforms/VideoPlatformX11.cpp
+    Platforms/Audio/AudioCaptureWorker.cpp
+    Platforms/Audio/AudioPcmMixer.cpp
+    Platforms/Encoding/AnimatedEncoderWorker.cpp
+    Platforms/X11/X11Connection.cpp
+    Platforms/X11/X11FrameGrabWorker.cpp
+    Platforms/X11/X11ScreenModel.cpp
+    Platforms/X11/X11TargetSelector.cpp
     RecordingModeModel.cpp
-    ScreenShotEffect.cpp
     ShortcutActions.cpp
     SpectacleCore.cpp
     SpectacleDBusAdapter.cpp
     VideoFormatModel.cpp
 )
 
-if(XCB_FOUND)
-    target_sources(spectacle PRIVATE Platforms/ImagePlatformXcb.cpp Platforms/ImagePlatformXcb.h)
+target_sources(spectacle PRIVATE
+    Platforms/ImagePlatformXcb.h
+    Platforms/PlatformLoader.h
+    Platforms/VideoPlatform.h
+    Platforms/VideoPlatformX11.h
+    Platforms/Audio/AudioCaptureWorker.h
+    Platforms/Audio/AudioPcmMixer.h
+    Platforms/Encoding/AnimatedEncoderWorker.h
+    Platforms/PlatformNull.h
+    Platforms/X11/X11Connection.h
+    Platforms/X11/X11FrameGrabWorker.h
+    Platforms/X11/X11ScreenModel.h
+    Platforms/X11/X11TargetSelector.h
+    PlatformOutput.h
+    PlatformStartup.h
+)
 
-    target_link_libraries(spectacle PRIVATE
-        XCB::XFIXES
-        XCB::IMAGE
-        XCB::CURSOR
-        XCB::UTIL
-        XCB::RANDR
-    )
-    target_link_libraries(spectacle PRIVATE Qt6::GuiPrivate) # Gui/private/qtx11extras_p.h
-endif()
-
-qt6_generate_wayland_protocol_client_sources(spectacle
-    PRIVATE_CODE
-    FILES
-        ${PLASMA_WAYLAND_PROTOCOLS_DIR}/zkde-screencast-unstable-v1.xml
+target_link_libraries(spectacle PRIVATE
+    XCB::XFIXES
+    XCB::IMAGE
+    XCB::UTIL
+    XCB::CURSOR
+    XCB::RANDR
+    FFmpeg::AVCODEC
+    FFmpeg::AVFORMAT
+    FFmpeg::AVUTIL
+    FFmpeg::SWSCALE
+    PulseAudio::PulseAudio
 )
 
 if(PURPOSE_FOUND)
@@ -101,13 +118,13 @@ target_include_directories(spectacle PUBLIC ${OpenCV_INCLUDE_DIRS})
 target_link_libraries(spectacle PRIVATE
     Qt::Concurrent
     Qt::DBus
+    Qt::Multimedia
     Qt::PrintSupport
     Qt::Qml
     Qt::Quick
     Qt::QuickControls2
     Qt::QuickTemplates2
     Qt::GuiPrivate
-    Qt::WaylandClient
     KF6::CoreAddons
     KF6::DBusAddons
     KF6::WidgetsAddons
@@ -124,9 +141,6 @@ target_link_libraries(spectacle PRIVATE
     KF6::PrisonScanner
     KF6::Crash
     KF6::I18nQml
-    K::KPipeWireRecord
-    Wayland::Client
-    LayerShellQt::Interface
     KQuickImageEditor
     ${OpenCV_LIBRARIES}
     PkgConfig::TESSERACT
@@ -137,6 +151,9 @@ target_link_libraries(spectacle PRIVATE
 target_include_directories(spectacle PRIVATE
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Gui>"
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Platforms>"
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Platforms/Audio>"
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Platforms/Encoding>"
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Platforms/X11>"
 )
 
 set_source_files_properties(Gui/QmlUtils.qml PROPERTIES

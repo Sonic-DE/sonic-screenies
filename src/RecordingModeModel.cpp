@@ -8,14 +8,6 @@
 #include <KGlobalAccel>
 #include <KLocalizedString>
 
-#include <QApplication>
-#include <QDBusConnection>
-#include <QDBusMessage>
-#include <QDBusPendingCall>
-#include <QDBusPendingReply>
-#include <QScreen>
-#include <qnamespace.h>
-
 using namespace Qt::StringLiterals;
 
 static std::unique_ptr<RecordingModeModel> s_instance;
@@ -63,7 +55,9 @@ QVariant RecordingModeModel::data(const QModelIndex &index, int role) const
 
 int RecordingModeModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent)
+    if (parent.isValid()) {
+        return 0;
+    }
     return m_data.size();
 }
 
@@ -81,7 +75,8 @@ int RecordingModeModel::indexOfRecordingMode(VideoPlatform::RecordingMode mode) 
 
 void RecordingModeModel::setRecordingModes(VideoPlatform::RecordingModes modes)
 {
-    auto count = m_data.size();
+    const int oldCount = m_data.size();
+    QAbstractListModel::beginResetModel();
     m_data.clear();
     if (modes & VideoPlatform::Region) {
         m_data.append({VideoPlatform::Region, recordingModeLabel(VideoPlatform::Region)});
@@ -92,8 +87,9 @@ void RecordingModeModel::setRecordingModes(VideoPlatform::RecordingModes modes)
     if (modes & VideoPlatform::Window) {
         m_data.append({VideoPlatform::Window, recordingModeLabel(VideoPlatform::Window)});
     }
+    QAbstractListModel::endResetModel();
     Q_EMIT recordingModesChanged();
-    if (count != m_data.size()) {
+    if (oldCount != m_data.size()) {
         Q_EMIT countChanged();
     }
 }

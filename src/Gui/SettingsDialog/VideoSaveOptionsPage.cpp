@@ -72,6 +72,10 @@ void VideoSaveOptionsPage::updateFilenamePreview()
 {
     const auto extension = m_videoFormatComboBox->currentData(VideoFormatModel::ExtensionRole).toString();
     const auto templateBasename = m_ui->kcfg_videoFilenameTemplate->text();
+    if (extension.isEmpty()) {
+        ::updateFilenamePreview(m_ui->preview, templateBasename, Settings::videoSaveLocation());
+        return;
+    }
     ::updateFilenamePreview(m_ui->preview, templateBasename + u'.' + extension, Settings::videoSaveLocation());
 }
 

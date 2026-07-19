@@ -5,12 +5,12 @@
  *  SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
+#include "CommandLineOptions.h"
 #include "Config.h"
+#include "PlatformStartup.h"
 #include "ShortcutActions.h"
 #include "SpectacleCore.h"
-#include "CommandLineOptions.h"
 #include "SpectacleDBusAdapter.h"
-#include "ScreenShotEffect.h"
 #include "settings.h"
 
 #include <QApplication>
@@ -19,20 +19,18 @@
 #include <QDir>
 #include <QIcon>
 #include <QSessionManager>
+#include <QtGlobal>
 
 #include <KAboutData>
 #include <KCrash>
 #include <KDBusService>
 #include <KLocalizedString>
 #include <KMessageBox>
-#include <KWindowSystem>
 
 using namespace Qt::StringLiterals;
 
 int main(int argc, char **argv)
 {
-    // set up the application
-
     QCoreApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
     QIcon::setFallbackThemeName(u"breeze"_s);
     QApplication app(argc, argv);
@@ -59,83 +57,47 @@ int main(int argc, char **argv)
     aboutData.setupCommandLine(&commandLineParser);
     commandLineParser.addOptions(CommandLineOptions::self()->allOptions);
 
-    // first parsing for help-about
     commandLineParser.process(app.arguments());
     aboutData.processCommandLine(&commandLineParser);
 
-    // BUG: https://bugs.kde.org/show_bug.cgi?id=451842
-    // We currently don't support desktop environments besides KDE Plasma on Wayland
-    // because we have to rely on KWin's DBus API.
-    if (KWindowSystem::isPlatformWayland() && !ScreenShotEffect::isLoaded()) {
-        auto message = i18n("On Wayland, Spectacle requires KDE Plasma's KWin compositor, which does not seem to be available. Use Spectacle on KDE Plasma, or use a different screenshot tool.");
+    if (!PlatformStartup::isSupportedX11Session(app.platformName(), qEnvironmentVariable("XDG_SESSION_TYPE"))) {
+        const auto message = i18n("Spectacle now requires an X11 session. Use Spectacle under an X11 desktop, or run with QT_QPA_PLATFORM=xcb in an X11 session.");
         qWarning().noquote() << message;
         if (commandLineParser.isSet(CommandLineOptions::self()->background)
             || commandLineParser.isSet(CommandLineOptions::self()->dbus)) {
-            // Return early if not in GUI mode.
             return 1;
-        } else {
-            KMessageBox::error(nullptr, message);
         }
+        KMessageBox::error(nullptr, message);
+        return 1;
     }
 
-    // Prevent session manager from restoring the app on start up.
-    // https://bugs.kde.org/show_bug.cgi?id=430411
     auto disableSessionManagement = [](QSessionManager &sm) {
         sm.setRestartHint(QSessionManager::RestartNever);
     };
     QObject::connect(&app, &QGuiApplication::commitDataRequest, disableSessionManagement);
     QObject::connect(&app, &QGuiApplication::saveStateRequest, disableSessionManagement);
 
-    // If the new instance command line option has been specified,
-    // use this alternative path for executing Spectacle.
     if (commandLineParser.isSet(CommandLineOptions::self()->newInstance)) {
         auto spectacleCore = SpectacleCore::instance();
 
         QObject::connect(qApp, &QApplication::aboutToQuit, Settings::self(), &Settings::save);
         QObject::connect(spectacleCore, &SpectacleCore::allDone, &app, &QCoreApplication::quit, Qt::QueuedConnection);
 
-        // fire it up
         spectacleCore->activate(app.arguments(), QDir::currentPath());
 
         return app.exec();
     }
 
-    // With the StartupOption::Unique flag, this process will exit during the construction of
-    // KDBusService if Spectacle has already been registered.
-    // This object does not need a parent since it will be deleted when it falls out of scope.
     KDBusService service(KDBusService::Unique);
 
     auto spectacleCore = SpectacleCore::instance();
 
     QObject::connect(&service, &KDBusService::activateRequested, spectacleCore, &SpectacleCore::activate);
-    QObject::connect(&service, &KDBusService::activateActionRequested, spectacleCore, &SpectacleCore::activateAction);
+    QObject::connect(qApp, &QApplication::aboutToQuit, Settings::self(), &Settings::save);
 
-    QObject::connect(&app, &QCoreApplication::aboutToQuit, Settings::self(), &Settings::save);
-    QObject::connect(spectacleCore, &SpectacleCore::allDone, &app, &QCoreApplication::quit, Qt::QueuedConnection);
-
-    // create the dbus connections
-    SpectacleDBusAdapter *dbusAdapter = new SpectacleDBusAdapter(spectacleCore);
-    QObject::connect(spectacleCore, &SpectacleCore::dbusScreenshotFailed, dbusAdapter, &SpectacleDBusAdapter::ScreenshotFailed);
-    QObject::connect(spectacleCore, &SpectacleCore::dbusRecordingFailed, dbusAdapter, &SpectacleDBusAdapter::RecordingFailed);
-    QObject::connect(ExportManager::instance(),
-                     &ExportManager::imageExported,
-                     spectacleCore,
-                     [dbusAdapter](const ExportManager::Actions &actions, const QUrl &url) {
-                         Q_UNUSED(actions)
-                         Q_EMIT dbusAdapter->ScreenshotTaken(url.toLocalFile());
-                     });
-    QObject::connect(ExportManager::instance(),
-                     &ExportManager::videoExported,
-                     spectacleCore,
-                     [dbusAdapter](const ExportManager::Actions &actions, const QUrl &url) {
-                         Q_UNUSED(actions)
-                         Q_EMIT dbusAdapter->RecordingTaken(url.toLocalFile());
-                     });
-    QDBusConnection::sessionBus().registerObject(u"/"_s, spectacleCore);
-    QDBusConnection::sessionBus().registerService(u"org.kde.Spectacle"_s);
-
-    // fire it up
-    spectacleCore->activate(app.arguments(), QDir::currentPath());
+    if (auto dbusAdapter = new SpectacleDBusAdapter(spectacleCore); !QDBusConnection::sessionBus().registerObject(u"/org/kde/Spectacle"_s, dbusAdapter)) {
+        qWarning("Failed to register the DBus interface");
+    }
 
     return app.exec();
 }

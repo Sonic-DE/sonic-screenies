@@ -51,7 +51,6 @@ find_package(
         DBus
         PrintSupport
         Test
-        WaylandClient
         Multimedia
 )
 qt_policy(SET QTP0001 NEW)
@@ -84,21 +83,16 @@ find_package(
         Prison
         Crash
 )
-if (NOT TARGET KF6::PrisonScanner ) 
+if (NOT TARGET KF6::PrisonScanner )
     message(SEND_ERROR "Prison built without required PrisonScanner component")
 endif()
 
-find_package(Wayland REQUIRED COMPONENTS Client)
-find_package(PlasmaWaylandProtocols REQUIRED)
-find_package(LayerShellQt REQUIRED)
-find_package(KPipeWire)
-find_package(OpenCV 4.7 REQUIRED core imgproc)
+find_package(XCB REQUIRED COMPONENTS XFIXES IMAGE UTIL CURSOR RANDR)
+find_package(FFmpeg REQUIRED COMPONENTS AVCODEC AVFORMAT AVUTIL SWSCALE)
+find_package(PulseAudio REQUIRED)
 find_package(PkgConfig REQUIRED)
-
-set_package_properties(KPipeWire PROPERTIES DESCRIPTION
-    "Used to record pipewire streams into a file"
-    TYPE REQUIRED
-)
+pkg_check_modules(OPENCV REQUIRED IMPORTED_TARGET opencv5)
+find_package(OpenCV 5 REQUIRED core imgproc)
 
 ecm_find_qmlmodule(org.kde.kquickimageeditor)
 find_package(KQuickImageEditor COMPONENTS)
@@ -120,31 +114,6 @@ set_package_properties(KF6DocTools PROPERTIES DESCRIPTION
 find_package(KF6Purpose)
 if (KF6Purpose_FOUND)
     set(PURPOSE_FOUND 1)
-endif()
-
-find_package(XCB COMPONENTS XFIXES IMAGE UTIL CURSOR RANDR)
-set(XCB_COMPONENTS_ERRORS FALSE)
-set(XCB_COMPONENTS_FOUND TRUE)
-if(NOT XCB_XFIXES_FOUND)
-	set(XCB_COMPONENTS_ERRORS "${XCB_COMPONENTS_ERRORS} XCB-XFIXES ")
-	set(XCB_COMPONENTS_FOUND FALSE)
-endif()
-if(NOT XCB_IMAGE_FOUND)
-	set(XCB_COMPONENTS_ERRORS "${XCB_COMPONENTS_ERRORS} XCB-IMAGE ")
-	set(XCB_COMPONENTS_FOUND FALSE)
-endif()
-if(NOT XCB_UTIL_FOUND)
-	set(XCB_COMPONENTS_ERRORS "${XCB_COMPONENTS_ERRORS} XCB-UTIL ")
-	set(XCB_COMPONENTS_FOUND FALSE)
-endif()
-if(NOT XCB_CURSOR_FOUND)
-	set(XCB_COMPONENTS_ERRORS "${XCB_COMPONENTS_ERRORS} XCB-CURSOR ")
-	set(XCB_COMPONENTS_FOUND FALSE)
-endif()
-
-# fail build if none of the platform backends can be found
-if (NOT XCB_FOUND OR NOT XCB_COMPONENTS_FOUND)
-    message(FATAL_ERROR "No suitable backend platform was found. Currently supported platforms are: XCB Components Required: ${XCB_COMPONENTS_ERRORS}")
 endif()
 
 # setup handling of deprecated Qt & KF API

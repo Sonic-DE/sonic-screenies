@@ -11,8 +11,6 @@
 #include "Gui/SelectionEditor.h"
 #include "SpectacleCore.h"
 
-#include <KWaylandExtras>
-
 #include <QApplication>
 #include <QClipboard>
 #include <QScreen>
@@ -46,8 +44,6 @@ CaptureWindow::CaptureWindow(Mode mode, QScreen *screen, QQmlEngine *engine, QWi
     });
 
     setWindowStates(Qt::WindowFullScreen);
-
-    KWaylandExtras::setXdgToplevelTag(this, QStringLiteral("region-editor"));
 
     this->setColor(Qt::transparent);
 

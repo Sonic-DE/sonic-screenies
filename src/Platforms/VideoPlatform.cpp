@@ -5,6 +5,7 @@
  */
 
 #include "VideoPlatform.h"
+#include "spectacle_debug.h"
 #include <QTimerEvent>
 
 using namespace Qt::StringLiterals;
@@ -19,9 +20,24 @@ bool VideoPlatform::isRecording() const
     return m_recordingState == RecordingState::Recording;
 }
 
+bool VideoPlatform::isBusy() const
+{
+    return isRecording();
+}
+
 qint64 VideoPlatform::recordedTime() const
 {
     return m_recordedTime;
+}
+
+bool VideoPlatform::formatSupportsAudio(Format format)
+{
+    return format == WebM_VP9 || format == MP4_H264;
+}
+
+VideoPlatform::Format VideoPlatform::effectivePreferredFormat() const
+{
+    return NoFormat;
 }
 
 void VideoPlatform::timerEvent(QTimerEvent *event)
@@ -110,6 +126,33 @@ void VideoPlatform::setRecordingMode(RecordingMode mode)
         return;
     }
     m_recordingMode = mode;
+}
+
+void VideoPlatform::setSupportedRecordingModes(RecordingModes modes)
+{
+    if (m_supportedRecordingModes == modes) {
+        return;
+    }
+    m_supportedRecordingModes = modes;
+    Q_EMIT supportedRecordingModesChanged();
+}
+
+void VideoPlatform::setSupportedFormats(Formats formats)
+{
+    if (m_supportedFormats == formats) {
+        return;
+    }
+    m_supportedFormats = formats;
+    Q_EMIT supportedFormatsChanged();
+}
+
+void VideoPlatform::setEffectivePreferredFormat(Format format)
+{
+    if (m_effectivePreferredFormat == format) {
+        return;
+    }
+    m_effectivePreferredFormat = format;
+    Q_EMIT effectivePreferredFormatChanged();
 }
 
 #include "moc_VideoPlatform.cpp"

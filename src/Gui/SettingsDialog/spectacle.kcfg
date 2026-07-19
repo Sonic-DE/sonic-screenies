@@ -190,6 +190,14 @@
         <choices name="VideoPlatform::Format"></choices>
         <default>VideoPlatform::Format::DefaultFormat</default>
     </entry>
+    <entry name="videoRecordMicrophone" type="Bool">
+        <label>Record microphone audio in videos</label>
+        <default>false</default>
+    </entry>
+    <entry name="videoRecordSystemAudio" type="Bool">
+        <label>Record system audio in videos</label>
+        <default>false</default>
+    </entry>
     <entry name="videoFilenameTemplate" type="String">
         <label>The filename template used when saving screencasts</label>
         <default code="true">
