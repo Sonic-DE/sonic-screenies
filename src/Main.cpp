@@ -32,7 +32,7 @@ using namespace Qt::StringLiterals;
 int main(int argc, char **argv)
 {
     QCoreApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
-    QIcon::setFallbackThemeName(u"breeze"_s);
+    QIcon::setFallbackThemeName(u"silver"_s);
     QApplication app(argc, argv);
 
     KLocalizedString::setApplicationDomain(QByteArrayLiteral("spectacle"));
