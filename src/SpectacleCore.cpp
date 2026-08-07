@@ -111,6 +111,10 @@ SpectacleCore::SpectacleCore(QObject *parent)
         }
     };
     auto onFinished = [this]() {
+        // Do not fire the grab if cancellation was already requested.
+        if (m_selectionQuitRequested) {
+            return;
+        }
         m_imagePlatform->doGrab(ImagePlatform::ShutterMode::Immediate, m_lastGrabMode, m_lastIncludePointer, m_lastIncludeDecorations, m_lastIncludeShadow);
     };
     QObject::connect(delayAnimation, &QVariantAnimation::stateChanged,
@@ -249,6 +253,11 @@ SpectacleCore::SpectacleCore(QObject *parent)
         onScreenshotOrRecordingFailed(message, uiMessage, &SpectacleCore::dbusScreenshotFailed);
     });
     connect(imagePlatform, &ImagePlatform::newScreenshotCanceled, this, [this]() {
+        // If terminal cancellation was already initiated for selection/picking,
+        // do not restore windows or create a viewer.
+        if (m_selectionQuitRequested) {
+            return;
+        }
         if (m_startMode != StartMode::Gui || !m_returnToViewer || isGuiNull()) {
             Q_EMIT allDone();
             return;
@@ -1138,6 +1147,10 @@ void SpectacleCore::takeNewScreenshot(ImagePlatform::GrabMode grabMode, int time
         m_cliOptions[CommandLineOptions::EditExisting] = false;
     }
 
+    // Reset the terminal cancellation guard and invalidate stale delayed callbacks.
+    m_selectionQuitRequested = false;
+    ++m_screenshotGeneration;
+
     m_delayAnimation->stop();
 
     m_lastGrabMode = grabMode;
@@ -1165,7 +1178,12 @@ void SpectacleCore::takeNewScreenshot(ImagePlatform::GrabMode grabMode, int time
 
     if (noDelay) {
         SpectacleWindow::setVisibilityForAll(QWindow::Hidden);
-        QTimer::singleShot(timeout, this, [this]() {
+        const auto gen = m_screenshotGeneration;
+        QTimer::singleShot(timeout, this, [this, gen]() {
+            // Discard stale callbacks from a cancelled or superseded operation.
+            if (gen != m_screenshotGeneration || m_selectionQuitRequested) {
+                return;
+            }
             m_imagePlatform->doGrab(ImagePlatform::ShutterMode::Immediate, m_lastGrabMode, m_lastIncludePointer, m_lastIncludeDecorations, m_lastIncludeShadow);
         });
         return;
@@ -1182,6 +1200,15 @@ void SpectacleCore::takeNewScreenshot(ImagePlatform::GrabMode grabMode, int time
 void SpectacleCore::takeNewScreenshot(int captureMode, int timeout, bool includePointer, bool includeDecorations, bool includeShadow)
 {
     using CaptureMode = CaptureModeModel::CaptureMode;
+    // Window Under Cursor must always wait for a left-click target selection,
+    // regardless of the global captureOnClick setting or timeout.
+    // This matches the pre-regression interactive-window behavior.
+    if (captureMode == static_cast<int>(CaptureMode::WindowUnderCursor)
+        && m_imagePlatform->supportedShutterModes().testFlag(ImagePlatform::OnClick)) {
+        const auto grabMode = toGrabMode(CaptureMode(captureMode), Settings::transientOnly());
+        takeNewScreenshot(grabMode, -1, includePointer, includeDecorations, includeShadow);
+        return;
+    }
     if (timeout < 0 && !m_imagePlatform->supportedShutterModes().testFlag(ImagePlatform::OnClick)) {
         timeout = Settings::captureDelay() * 1000;
     }
@@ -1190,6 +1217,34 @@ void SpectacleCore::takeNewScreenshot(int captureMode, int timeout, bool include
 
 void SpectacleCore::cancelScreenshot()
 {
+    // Check if we are in an active selection or picking state.
+    const bool hasCaptureWindows = !CaptureWindow::instances().isEmpty();
+    const bool pickerActive = m_imagePlatform->isTargetSelectionActive();
+
+    if (hasCaptureWindows || pickerActive) {
+        // Terminal cancellation: close the application.
+        // Guard against duplicate terminal signals from simultaneous Cancel/Escape/platform cancel.
+        if (m_selectionQuitRequested) {
+            return;
+        }
+        m_selectionQuitRequested = true;
+
+        // Stop any running countdown.
+        m_delayAnimation->stop();
+
+        // Cancel the platform picker if active.
+        if (pickerActive) {
+            m_imagePlatform->cancelTargetSelection();
+        }
+
+        // Destroy capture windows without creating a viewer.
+        deleteWindows();
+
+        // Request application termination.
+        Q_EMIT applicationQuitRequested();
+        return;
+    }
+
     if (m_startMode != StartMode::Gui || !m_returnToViewer) {
         Q_EMIT allDone();
         return;

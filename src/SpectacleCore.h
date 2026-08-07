@@ -128,6 +128,7 @@ Q_SIGNALS:
     void captureProgressChanged();
 
     void allDone();
+    void applicationQuitRequested();
     void dbusScreenshotFailed(const QString &message);
     void dbusRecordingFailed(const QString &message);
     void videoModeChanged(bool videoMode);
@@ -183,6 +184,13 @@ private:
     std::vector<CaptureWindow::UniquePointer> m_captureWindows;
 
     std::array<bool, CommandLineOptions::TotalOptions> m_cliOptions = {};
+
+    // Guard to prevent duplicate terminal cancellation when Cancel/Escape and
+    // platform cancellation arrive together during selection or picking.
+    bool m_selectionQuitRequested = false;
+
+    // Interaction generation token to invalidate stale delayed capture callbacks.
+    uint m_screenshotGeneration = 0;
 
     QUrl m_editExistingUrl;
     QUrl m_outputUrl;

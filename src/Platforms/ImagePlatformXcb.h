@@ -13,6 +13,11 @@
 
 #include <QPixmap>
 
+namespace X11 {
+class TargetSelector;
+struct Target;
+} // namespace X11
+
 class ImagePlatformXcb final : public ImagePlatform
 {
     Q_OBJECT
@@ -23,6 +28,9 @@ public:
 
     GrabModes supportedGrabModes() const override final;
     ShutterModes supportedShutterModes() const override final;
+
+    bool isTargetSelectionActive() const override;
+    void cancelTargetSelection() override;
 
 public Q_SLOTS:
     void doGrab(ImagePlatform::ShutterMode shutterMode,
@@ -35,6 +43,8 @@ private Q_SLOTS:
     void updateSupportedGrabModes();
     void doGrabNow(ImagePlatform::GrabMode grabMode, bool includePointer, bool includeDecorations, bool includeShadow);
     void doGrabOnClick(ImagePlatform::GrabMode grabMode, bool includePointer, bool includeDecorations, bool includeShadow);
+    void onTargetSelected(const X11::Target& target);
+    void onTargetSelectionCanceled(const QString& reason);
 
 private:
     QPoint getCursorPosition();
@@ -66,9 +76,20 @@ private:
     void grabWindowUnderCursor(bool includePointer, bool includeDecorations, bool includeShadow);
     void grabTransientWithParent(bool includePointer, bool includeDecorations, bool includeShadow);
 
+    // Interactive target selection using X11::TargetSelector for on-click window picking.
+    void startWindowTargetSelection(ImagePlatform::GrabMode grabMode, bool includePointer, bool includeDecorations, bool includeShadow);
     // on-click screenshot shutter support needs a native event filter in xcb
     class OnClickEventFilter;
     std::unique_ptr<OnClickEventFilter> m_nativeEventFilter;
+
+    // Interactive target picker for on-click window selection (separate from video recording's selector).
+    std::unique_ptr<X11::TargetSelector> m_screenshotTargetSelector;
+
+    // Stored capture options for the active on-click window selection.
+    ImagePlatform::GrabMode m_pendingGrabMode = GrabMode::NoGrabModes;
+    bool m_pendingIncludePointer = false;
+    bool m_pendingIncludeDecorations = true;
+    bool m_pendingIncludeShadow = true;
 
     GrabModes m_grabModes;
 };
