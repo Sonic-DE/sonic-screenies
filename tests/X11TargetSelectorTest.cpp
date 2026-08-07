@@ -19,6 +19,8 @@ class X11TargetSelectorTest : public QObject {
 
 private Q_SLOTS:
     void cancelIsIdempotent();
+    void cancelBeforeStartIsSafe();
+    void doubleCancelEmitsOnce();
     void screenHelperResolvesPrimaryScreen();
     void windowHelpersResolveClientTitleAndGeometry();
 };
@@ -95,6 +97,33 @@ void X11TargetSelectorTest::cancelIsIdempotent()
     selector.cancel(u"second"_s);
 
     QCOMPARE(selectedSpy.size(), 0);
+    QCOMPARE(canceledSpy.size(), 1);
+    QCOMPARE(canceledSpy.first().first().toString(), u"first"_s);
+}
+
+void X11TargetSelectorTest::cancelBeforeStartIsSafe()
+{
+    // cancel() must be safe to call on a fresh selector that has never been started.
+    X11::TargetSelector selector(X11::TargetSelectionMode::Window);
+    QSignalSpy canceledSpy(&selector, &X11::TargetSelector::selectionCanceled);
+    QVERIFY(canceledSpy.isValid());
+
+    selector.cancel(u"pre-start cancel"_s);
+
+    QCOMPARE(canceledSpy.size(), 1);
+    QCOMPARE(canceledSpy.first().first().toString(), u"pre-start cancel"_s);
+    QVERIFY(!selector.isActive());
+}
+
+void X11TargetSelectorTest::doubleCancelEmitsOnce()
+{
+    X11::TargetSelector selector(X11::TargetSelectionMode::Window);
+    QSignalSpy canceledSpy(&selector, &X11::TargetSelector::selectionCanceled);
+    QVERIFY(canceledSpy.isValid());
+
+    selector.cancel(u"first"_s);
+    selector.cancel(u"second"_s);
+
     QCOMPARE(canceledSpy.size(), 1);
     QCOMPARE(canceledSpy.first().first().toString(), u"first"_s);
 }

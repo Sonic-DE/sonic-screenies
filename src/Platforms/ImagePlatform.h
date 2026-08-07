@@ -46,6 +46,24 @@ public:
     virtual GrabModes supportedGrabModes() const = 0;
     virtual ShutterModes supportedShutterModes() const = 0;
 
+    /**
+     * Returns true if an interactive target selection (e.g. X11 window picker)
+     * is currently active and waiting for user input.
+     * Default implementation returns false.
+     */
+    virtual bool isTargetSelectionActive() const
+    {
+        return false;
+    }
+
+    /**
+     * Cancels an active interactive target selection, if any.
+     * Default implementation does nothing.
+     */
+    virtual void cancelTargetSelection()
+    {
+    }
+
 public Q_SLOTS:
     virtual void
     doGrab(ImagePlatform::ShutterMode shutterMode, ImagePlatform::GrabMode grabMode, bool includePointer, bool includeDecorations, bool includeShadow) = 0;

@@ -6,6 +6,7 @@
 
 #include "ImagePlatformXcb.h"
 #include "ImageMetaData.h"
+#include "Platforms/X11/X11TargetSelector.h"
 
 #include <xcb/randr.h>
 #include <xcb/xcb_cursor.h>
@@ -34,6 +35,8 @@
 #include <KWindowInfo>
 #include <KWindowSystem>
 #include <KX11Extras>
+
+#include "spectacle_debug.h"
 
 using namespace Qt::StringLiterals;
 
@@ -638,6 +641,78 @@ void ImagePlatformXcb::grabTransientWithParent(bool includePointer, bool include
     Q_EMIT newScreenshotTaken(image);
 }
 
+bool ImagePlatformXcb::isTargetSelectionActive() const
+{
+    return m_screenshotTargetSelector && m_screenshotTargetSelector->isActive();
+}
+
+void ImagePlatformXcb::cancelTargetSelection()
+{
+    if (isTargetSelectionActive()) {
+        m_screenshotTargetSelector->cancel(u"Screenshot target selection canceled"_s);
+    }
+}
+
+void ImagePlatformXcb::startWindowTargetSelection(ImagePlatform::GrabMode grabMode, bool includePointer, bool includeDecorations, bool includeShadow)
+{
+    // If a previous selector is somehow still alive, cancel it first.
+    if (m_screenshotTargetSelector) {
+        m_screenshotTargetSelector->cancel(u"Previous screenshot target selection superseded"_s);
+        m_screenshotTargetSelector.reset();
+    }
+
+    m_pendingGrabMode = grabMode;
+    m_pendingIncludePointer = includePointer;
+    m_pendingIncludeDecorations = includeDecorations;
+    m_pendingIncludeShadow = includeShadow;
+
+    m_screenshotTargetSelector = std::make_unique<X11::TargetSelector>(X11::TargetSelectionMode::Window, this);
+    connect(m_screenshotTargetSelector.get(), &X11::TargetSelector::targetSelected,
+        this, &ImagePlatformXcb::onTargetSelected, Qt::QueuedConnection);
+    connect(m_screenshotTargetSelector.get(), &X11::TargetSelector::selectionCanceled,
+        this, &ImagePlatformXcb::onTargetSelectionCanceled, Qt::QueuedConnection);
+
+    if (!m_screenshotTargetSelector->start()) {
+        // start() emits the exactly-once cancellation signal on failure.
+        qCWarning(SPECTACLE_LOG) << "Failed to start X11 screenshot target selection";
+    }
+}
+
+void ImagePlatformXcb::onTargetSelected(const X11::Target& target)
+{
+    const auto windowId = target.windowId;
+    if (windowId == XCB_NONE) {
+        qCWarning(SPECTACLE_LOG) << "Target selection returned no valid window ID";
+        Q_EMIT newScreenshotCanceled();
+        m_screenshotTargetSelector.reset();
+        return;
+    }
+
+    // Clear the selector before performing the grab. The selector has already
+    // cleaned up its X11 resources before emitting targetSelected.
+    m_screenshotTargetSelector.reset();
+
+    const auto grabMode = m_pendingGrabMode;
+    const auto includePointer = m_pendingIncludePointer;
+    const auto includeDecorations = m_pendingIncludeDecorations;
+    const auto includeShadow = m_pendingIncludeShadow;
+
+    if (grabMode == GrabMode::TransientWithParent) {
+        // Capture the transient family of the selected window directly.
+        grabApplicationWindow(windowId, includePointer, includeDecorations);
+    } else {
+        // WindowUnderCursor: capture the selected window directly.
+        grabApplicationWindow(windowId, includePointer, includeDecorations);
+    }
+}
+
+void ImagePlatformXcb::onTargetSelectionCanceled(const QString& reason)
+{
+    qCInfo(SPECTACLE_LOG).noquote() << "Screenshot target selection canceled:" << reason;
+    m_screenshotTargetSelector.reset();
+    Q_EMIT newScreenshotCanceled();
+}
+
 void ImagePlatformXcb::doGrabNow(GrabMode grabMode, bool includePointer, bool includeDecorations, bool includeShadow)
 {
     switch (grabMode) {
@@ -668,6 +743,14 @@ void ImagePlatformXcb::doGrabNow(GrabMode grabMode, bool includePointer, bool in
 
 void ImagePlatformXcb::doGrabOnClick(GrabMode grabMode, bool includePointer, bool includeDecorations, bool includeShadow)
 {
+    // Route window-selection modes through X11::TargetSelector, which grabs both
+    // pointer and keyboard, handles Escape cancellation, and resolves the clicked
+    // window at click time rather than at menu-activation time.
+    if (grabMode == GrabMode::WindowUnderCursor || grabMode == GrabMode::TransientWithParent) {
+        startWindowTargetSelection(grabMode, includePointer, includeDecorations, includeShadow);
+        return;
+    }
+
     // get the cursor image
     xcb_cursor_t xcbCursor = XCB_CURSOR_NONE;
     xcb_cursor_context_t *xcbCursorCtx = nullptr;

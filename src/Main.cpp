@@ -82,6 +82,7 @@ int main(int argc, char **argv)
 
         QObject::connect(qApp, &QApplication::aboutToQuit, Settings::self(), &Settings::save);
         QObject::connect(spectacleCore, &SpectacleCore::allDone, &app, &QCoreApplication::quit, Qt::QueuedConnection);
+        QObject::connect(spectacleCore, &SpectacleCore::applicationQuitRequested, &app, &QCoreApplication::quit, Qt::QueuedConnection);
 
         spectacleCore->activate(app.arguments(), QDir::currentPath());
 
@@ -94,6 +95,7 @@ int main(int argc, char **argv)
 
     QObject::connect(&service, &KDBusService::activateRequested, spectacleCore, &SpectacleCore::activate);
     QObject::connect(qApp, &QApplication::aboutToQuit, Settings::self(), &Settings::save);
+    QObject::connect(spectacleCore, &SpectacleCore::applicationQuitRequested, &app, &QCoreApplication::quit, Qt::QueuedConnection);
 
     if (auto dbusAdapter = new SpectacleDBusAdapter(spectacleCore); !QDBusConnection::sessionBus().registerObject(u"/org/kde/Spectacle"_s, dbusAdapter)) {
         qWarning("Failed to register the DBus interface");

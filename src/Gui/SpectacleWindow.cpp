@@ -9,12 +9,13 @@
 #include "SpectacleWindow.h"
 
 #include "ExportManager.h"
-#include "SpectacleCore.h"
 #include "Geometry.h"
+#include "Gui/CaptureWindow.h"
 #include "Gui/ExportMenu.h"
 #include "Gui/HelpMenu.h"
 #include "Gui/OptionsMenu.h"
 #include "Gui/WidgetWindowUtils.h"
+#include "SpectacleCore.h"
 
 #include <QApplication>
 #include <QColorDialog>
@@ -423,6 +424,17 @@ void SpectacleWindow::mouseReleaseEvent(QMouseEvent *event)
 
 void SpectacleWindow::keyPressEvent(QKeyEvent *event)
 {
+    // For CaptureWindow (region selection overlay), handle Escape/Cancel directly
+    // before forwarding to QML. QML items may accept the key press event, preventing
+    // the release-time guard from ever firing. Qt documents that key press/release
+    // events are accepted by default, so post-forwarding acceptance is not a reliable
+    // indicator that the application did not receive the press.
+    if (qobject_cast<CaptureWindow*>(this) && event->matches(QKeySequence::Cancel)) {
+        event->accept();
+        SpectacleCore::instance()->cancelScreenshot();
+        return;
+    }
+
     // Events need to be processed normally first for events to reach items
     QQuickView::keyPressEvent(event);
     if (event->isAccepted()) {
