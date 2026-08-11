@@ -14,6 +14,7 @@
 
 extern "C" {
 #include <libavcodec/avcodec.h>
+#include <libavcodec/version_major.h>
 #include <libavformat/avformat.h>
 #include <libavutil/error.h>
 #include <libavutil/mathematics.h>
@@ -73,12 +74,26 @@ namespace {
         return av_guess_format(codecSpecFor(format).muxerName, nullptr, nullptr) != nullptr;
     }
 
+    const AVPixelFormat* supportedPixelFormats(const AVCodec* codec)
+    {
+#if LIBAVCODEC_VERSION_MAJOR >= 63
+        const void* configurations = nullptr;
+        if (avcodec_get_supported_config(nullptr, codec, AV_CODEC_CONFIG_PIX_FORMAT, 0, &configurations, nullptr) < 0) {
+            return nullptr;
+        }
+        return static_cast<const AVPixelFormat*>(configurations);
+#else
+        return codec->pix_fmts;
+#endif
+    }
+
     bool pixelFormatSupported(const AVCodec* codec, AVPixelFormat format)
     {
-        if (!codec->pix_fmts) {
+        const auto* formats = supportedPixelFormats(codec);
+        if (!formats) {
             return true;
         }
-        for (const AVPixelFormat* it = codec->pix_fmts; *it != AV_PIX_FMT_NONE; ++it) {
+        for (const AVPixelFormat* it = formats; *it != AV_PIX_FMT_NONE; ++it) {
             if (*it == format) {
                 return true;
             }
@@ -109,7 +124,8 @@ namespace {
                 return *it;
             }
         }
-        return codec->pix_fmts ? codec->pix_fmts[0] : AV_PIX_FMT_NONE;
+        const auto* formats = supportedPixelFormats(codec);
+        return formats ? formats[0] : AV_PIX_FMT_NONE;
     }
 
     QString unavailableReasonFor(AnimatedEncoderWorker::Format format)
