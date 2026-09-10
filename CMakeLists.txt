@@ -8,7 +8,7 @@ project(Spectacle VERSION ${SPECTACLE_VERSION})
 
 # minimum requirements
 set(PROJECT_DEP_VERSION "6.7.0")
-set(QT_MIN_VERSION "6.10.0")
+set(QT_MIN_VERSION "6.11.0")
 set(KF6_MIN_VERSION "6.30.0")
 
 find_package(ECM ${KF6_MIN_VERSION} REQUIRED NO_MODULE)
@@ -53,17 +53,9 @@ find_package(
         Test
         Multimedia
 )
+find_package(Qt6GuiPrivate ${QT_MIN_VERSION} REQUIRED NO_MODULE)
+
 qt_policy(SET QTP0001 NEW)
-
-if(Qt6_VERSION VERSION_EQUAL 6.8.0)
-    # https://bugreports.qt.io/browse/QTBUG-129797
-    message(NOTICE "Qt6_VERSION: ${Qt6_VERSION} detected. Enabling CAST_FROM_ASCII")
-    remove_definitions(-DQT_NO_CAST_FROM_ASCII)
-endif()
-
-if (Qt6Gui_VERSION VERSION_GREATER_EQUAL "6.10.0")
-    find_package(Qt6GuiPrivate ${QT_MIN_VERSION} REQUIRED NO_MODULE)
-endif()
 
 find_package(
     KF6 ${KF6_MIN_VERSION} REQUIRED
@@ -83,7 +75,7 @@ find_package(
         Prison
         Crash
 )
-if (NOT TARGET KF6::PrisonScanner )
+if (NOT TARGET KF6::PrisonScanner ) 
     message(SEND_ERROR "Prison built without required PrisonScanner component")
 endif()
 
@@ -120,7 +112,7 @@ endif()
 
 # setup handling of deprecated Qt & KF API
 
-ecm_set_disabled_deprecation_versions(QT 6.11.0  KF 6.26.0)
+ecm_set_disabled_deprecation_versions(QT 6.11.0  KF 6.27.0)
 
 # hand off to subdirectories
 
