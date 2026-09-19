@@ -79,7 +79,7 @@ OptionsMenu::OptionsMenu(QWidget *parent)
     }
 
     auto quitAfterSaveAction = addAction(i18nc("@option:check", "Quit after manual Save or Copy"));
-    quitAfterSaveAction->setToolTip(i18nc("@info:tooltip", "Quit Spectacle after manually saving or copying the image"));
+    quitAfterSaveAction->setToolTip(i18nc("@info:tooltip", "Quit Sonic Screenies after manually saving or copying the image"));
     quitAfterSaveAction->setCheckable(true);
     quitAfterSaveAction->setChecked(Settings::quitAfterSaveCopyExport());
     QObject::connect(quitAfterSaveAction, &QAction::toggled, Settings::self(), &Settings::setQuitAfterSaveCopyExport);

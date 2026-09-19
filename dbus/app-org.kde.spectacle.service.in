@@ -1,7 +1,7 @@
 [Unit]
-Description=Spectacle screenshot capture utility
+Description=Sonic Screenies screenshot capture utility
 
 [Service]
-ExecStart=@KDE_INSTALL_FULL_BINDIR@/spectacle --dbus
+ExecStart=@KDE_INSTALL_FULL_BINDIR@/sonic-screenies --dbus
 BusName=org.kde.Spectacle
 KillMode=process
