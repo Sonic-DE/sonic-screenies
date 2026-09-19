@@ -94,6 +94,7 @@ int main(int argc, char **argv)
     auto spectacleCore = SpectacleCore::instance();
 
     QObject::connect(&service, &KDBusService::activateRequested, spectacleCore, &SpectacleCore::activate);
+    QObject::connect(&service, &KDBusService::activateActionRequested, spectacleCore, &SpectacleCore::activateAction);
     QObject::connect(qApp, &QApplication::aboutToQuit, Settings::self(), &Settings::save);
     QObject::connect(spectacleCore, &SpectacleCore::applicationQuitRequested, &app, &QCoreApplication::quit, Qt::QueuedConnection);
 
