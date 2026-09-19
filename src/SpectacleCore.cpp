@@ -288,7 +288,7 @@ SpectacleCore::SpectacleCore(QObject *parent)
             connect(s_systemTrayIcon.get(), &KStatusNotifierItem::activateRequested, this, [] {
                 SpectacleCore::instance()->finishRecording();
             });
-            const auto messageTitle = i18nc("recording notification title", "Spectacle is Recording");
+            const auto messageTitle = i18nc("recording notification title", "Sonic Screenies is Recording");
             auto getSimpleDefaultShortcut = [] {
                 const auto shortcuts = KGlobalAccel::self()->shortcut(ShortcutActions::self()->recordRegionAction());
                 if (shortcuts.contains(QKeySequence{Qt::META | Qt::Key_R})) {
@@ -333,7 +333,7 @@ SpectacleCore::SpectacleCore(QObject *parent)
             notification->sendEvent();
             if (!QMovie::supportedFormats().contains("webp"_ba)) {
                 const auto messageTitle = i18nc("missing webp support notification title", "WebP support is missing.");
-                const auto messageBody = i18nc("missing webp support notification message", "Please install Qt Image Formats to get animated system tray icons for Spectacle, and then report this packaging issue to your distributor.");
+                const auto messageBody = i18nc("missing webp support notification message", "Please install Qt Image Formats to get animated system tray icons for Sonic Screenies, and then report this packaging issue to your distributor.");
                 s_systemTrayIcon->showMessage(messageTitle, messageBody, u"dialog-warning"_s, 4000);
                 s_systemTrayIcon->setIconByName(u"media-record"_s);
                 return;
@@ -369,7 +369,7 @@ SpectacleCore::SpectacleCore(QObject *parent)
             });
             startedAnimation->start();
         } else if (state == VideoPlatform::RecordingState::Rendering && s_systemTrayIcon) {
-            const auto messageTitle = i18nc("recording notification title", "Spectacle is Finishing the Recording");
+            const auto messageTitle = i18nc("recording notification title", "Sonic Screenies is Finishing the Recording");
             const auto messageBody = i18nc("recording notification message", "Please wait");
             s_systemTrayIcon->setToolTipTitle(i18nc("@info:tooltip title for rendering tray icon", //
                                                     "Spectacle is Finishing the Recording"));

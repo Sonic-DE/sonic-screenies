@@ -7,13 +7,13 @@ ecm_install_configured_files(INPUT app-org.kde.spectacle.service.in DESTINATION 
 
 ecm_generate_dbus_service_file(
    NAME org.kde.spectacle
-   EXECUTABLE "${KDE_INSTALL_FULL_BINDIR}/spectacle --dbus"
+   EXECUTABLE "${KDE_INSTALL_FULL_BINDIR}/sonic-screenies --dbus"
    SYSTEMD_SERVICE app-org.kde.spectacle.service
    DESTINATION ${KDE_INSTALL_DBUSSERVICEDIR}
 )
 ecm_generate_dbus_service_file(
    NAME org.kde.Spectacle
-   EXECUTABLE "${KDE_INSTALL_FULL_BINDIR}/spectacle --dbus"
+   EXECUTABLE "${KDE_INSTALL_FULL_BINDIR}/sonic-screenies --dbus"
    SYSTEMD_SERVICE app-org.kde.spectacle.service
    DESTINATION ${KDE_INSTALL_DBUSSERVICEDIR}
 )

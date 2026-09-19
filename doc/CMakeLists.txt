@@ -7,7 +7,7 @@ KDOCTOOLS_CREATE_HANDBOOK(
 )
 
 KDOCTOOLS_CREATE_MANPAGE(
-    man-spectacle.1.docbook 1
+    man-sonic-screenies.1.docbook 1
     INSTALL_DESTINATION
     ${KDE_INSTALL_MANDIR}
 )

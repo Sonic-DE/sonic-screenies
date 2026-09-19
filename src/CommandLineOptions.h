@@ -55,8 +55,7 @@ struct CommandLineOptions {
     };
     const QCommandLineOption launchOnly = {
         {u"l"_s, u"launchonly"_s},
-        i18n("Launch Spectacle without taking a screenshot")
-    };
+        i18n("Launch Sonic Screenies without taking a screenshot")};
     const QCommandLineOption gui = {
         {u"g"_s, u"gui"_s},
         i18n("Start in GUI mode (default)")
@@ -97,8 +96,7 @@ struct CommandLineOptions {
     };
     const QCommandLineOption newInstance = {
         {u"i"_s, u"new-instance"_s},
-        i18n("Starts a new GUI instance of spectacle without registering to DBus")
-    };
+        i18n("Starts a new GUI instance of Sonic Screenies without registering to DBus")};
     const QCommandLineOption pointer = {
         {u"p"_s, u"pointer"_s},
         i18n("In background mode, include pointer in the screenshot")

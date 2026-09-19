@@ -39,17 +39,17 @@ int main(int argc, char **argv)
     QCoreApplication::setOrganizationDomain(u"org.kde"_s);
 
     KAboutData aboutData(u"spectacle"_s,
-                         i18n("Spectacle"),
-                         QStringLiteral(SPECTACLE_VERSION),
-                         i18n("KDE Screenshot Utility"),
-                         KAboutLicense::GPL_V2,
-                         i18n("© 2015 Boudhayan Gupta"));
+        i18n("Sonic Screenies"),
+        QStringLiteral(SPECTACLE_VERSION),
+        i18n("KDE Screenshot Utility"),
+        KAboutLicense::GPL_V2,
+        i18n("© 2015 Boudhayan Gupta"));
     aboutData.addAuthor(u"Boudhayan Gupta"_s, {}, u"bgupta@kde.org"_s);
     aboutData.addAuthor(u"David Redondo"_s, {}, u"kde@david-redondo.de"_s);
     aboutData.addAuthor(u"Noah Davis"_s, {}, u"noahadvs@gmail.com"_s);
     aboutData.setTranslator(i18nc("NAME OF TRANSLATORS", "Your names"), i18nc("EMAIL OF TRANSLATORS", "Your emails"));
     KAboutData::setApplicationData(aboutData);
-    app.setWindowIcon(QIcon::fromTheme(u"spectacle"_s));
+    app.setWindowIcon(QIcon::fromTheme(u"sonic-screenies"_s));
 
     KCrash::initialize();
 
@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     aboutData.processCommandLine(&commandLineParser);
 
     if (!PlatformStartup::isSupportedX11Session(app.platformName(), qEnvironmentVariable("XDG_SESSION_TYPE"))) {
-        const auto message = i18n("Spectacle now requires an X11 session. Use Spectacle under an X11 desktop, or run with QT_QPA_PLATFORM=xcb in an X11 session.");
+        const auto message = i18n("Sonic Screenies now requires an X11 session. Use Sonic Screenies under an X11 desktop, or run with QT_QPA_PLATFORM=xcb in an X11 session.");
         qWarning().noquote() << message;
         if (commandLineParser.isSet(CommandLineOptions::self()->background)
             || commandLineParser.isSet(CommandLineOptions::self()->dbus)) {

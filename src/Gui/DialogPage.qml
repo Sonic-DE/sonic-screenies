@@ -50,7 +50,7 @@ EmptyPage {
         QQC.Button {
             y: dprRound((parent.height - height) / 2)
             icon.name: "configure"
-            text: i18n("Configure Spectacle…")
+            text: i18n("Configure Sonic Screenies…")
             onClicked: contextWindow.showPreferencesDialog()
         }
         // Only ToolButton supports the menu button style with qqc2-desktop-style

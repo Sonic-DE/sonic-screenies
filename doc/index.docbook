@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
-  <!ENTITY spectacle "<application>Spectacle</application>">
+  <!ENTITY spectacle "<application>Sonic Screenies</application>">
   <!ENTITY % addindex "IGNORE">
   <!ENTITY % English "INCLUDE" > <!-- change language only here -->
 ]>
@@ -80,12 +80,12 @@
 
                 <para>To start &spectacle; from the command prompt, type in:</para>
                 <screen width="40">
-                    <prompt>%</prompt> <command>spectacle &amp;</command>
+                    <prompt>%</prompt> <command>sonic-screenies &amp;</command>
                 </screen>
 
                 <para>To view the full list of command-line options and their explanation, type in:</para>
                 <screen width="40">
-                    <prompt>%</prompt> <command>spectacle --help</command>
+                    <prompt>%</prompt> <command>sonic-screenies --help</command>
                 </screen>
             </listitem>
         </itemizedlist>
