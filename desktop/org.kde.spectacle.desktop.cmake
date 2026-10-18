@@ -202,7 +202,7 @@ StartupNotify=false
 Actions=FullScreenScreenShot;CurrentMonitorScreenShot;ActiveWindowScreenShot;RectangularRegionScreenShot;WindowUnderCursorScreenShot;RecordRegion;RecordScreen;RecordWindow;OpenWithoutScreenshot;
 DBusActivatable=true
 X-DBUS-StartupType=Unique
-X-DBUS-ServiceName=org.kde.Spectacle
+X-DBUS-ServiceName=org.sonicde.screenies
 X-KDE-Shortcuts=Print,Meta+Shift+S
 X-KDE-DBUS-Restricted-Interfaces=
 

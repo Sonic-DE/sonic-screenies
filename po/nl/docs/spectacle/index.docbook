@@ -57,11 +57,11 @@
 
         <keywordset>
             <keyword
->KDE</keyword>
+>SonicDE</keyword>
             <keyword
 >spectacle</keyword>
             <keyword
->kdegraphics</keyword>
+>screenies</keyword>
             <keyword
 >schermafdruk</keyword>
             <keyword
@@ -79,8 +79,8 @@
 >&spectacle; is een toepassing voor het maken en bewerken van schermafbeeldingen van het bureaublad. Het kan afbeeldingen van het gehele bureaublad, een enkele monitor, het nu actieve venster, het venster nu onder de muis of een rechthoekig gebied van het scherm. De afbeelding kan dan van annotaties worden voorzien, afgedrukt worden, naar een andere toepassing voor bewerking worden verzonden of snel worden opgeslagen zoals deze nu is.</para>
 
         <para
->Rapporteer problemen of verzoeken aan het <ulink url="https://bugs.kde.org/"
->&kde;-bug-opsporingssysteem</ulink
+>Rapporteer problemen of verzoeken aan het <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues"
+>SonicDE-bug-opsporingssysteem</ulink
 >.</para>
     </chapter>
 
@@ -422,7 +422,7 @@
                         <para
 >De optie <guilabel
 >Afsluiten na handmatig opslaan of kopiëren</guilabel
-> zal &spectacle; afsluiten na een opslag- of kopieerbewerking. Merk op dat een gekopieerde schermafdruk alleen bewaard zal worden als u een klembordbeheerder actief hebt die afbeeldingen accepteert. KDE Klipper kan geconfigureerd worden op deze manier door rechts te klikken op zijn pictogram, selecteren van <guilabel
+> zal &spectacle; afsluiten na een opslag- of kopieerbewerking. Merk op dat een gekopieerde schermafdruk alleen bewaard zal worden als u een klembordbeheerder actief hebt die afbeeldingen accepteert. SonicDE Klipper kan geconfigureerd worden op deze manier door rechts te klikken op zijn pictogram, selecteren van <guilabel
 >Klembord configureren...</guilabel
 > en deactiveren van <guilabel
 >Afbeeldingen negeren</guilabel
@@ -454,7 +454,7 @@
                         <para
 >Geeft u de gezamenlijke menu-items beschreven in <ulink url="help:/fundamentals/menus.html#menus-help"
 >Menu Help</ulink
-> van &kde; basisbeginselen.</para>
+> van SonicDE basisbeginselen.</para>
                     </listitem>
                 </varlistentry>
                 <varlistentry>
@@ -812,8 +812,8 @@
 >Als u een schermafdruk naar een venster van een bestandsbeheerder versleept, zal er een dialoogvenster verschijnen waarin u de bestandsnaam kunt bewerken en het afbeeldingsformat kunt selecteren en het bestand zal ingevoegd worden in de actuele map.</para>
 
             <para
->Als u de schermafdruk naar een tekstvak versleept, dan zal het pad naar het tijdelijk opgeslagen bestand ingevoegd worden. Dit is bijvoorbeeld nuttig bij het uploaden van een schermafdruk via webformulieren of om schermafdrukken in bugrapporten bij te voegen in de <ulink url="https://bugs.kde.org/"
->&kde; bugtracker</ulink
+>Als u de schermafdruk naar een tekstvak versleept, dan zal het pad naar het tijdelijk opgeslagen bestand ingevoegd worden. Dit is bijvoorbeeld nuttig bij het uploaden van een schermafdruk via webformulieren of om schermafdrukken in bugrapporten bij te voegen in de <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues"
+>SonicDE bugtracker</ulink
 >.</para>
 
             <para

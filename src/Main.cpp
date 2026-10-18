@@ -16,6 +16,7 @@
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDBusConnection>
+#include <QDBusError>
 #include <QDir>
 #include <QIcon>
 #include <QSessionManager>
@@ -36,17 +37,24 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
 
     KLocalizedString::setApplicationDomain(QByteArrayLiteral("spectacle"));
-    QCoreApplication::setOrganizationDomain(u"org.kde"_s);
+    QCoreApplication::setOrganizationDomain(u"sonicde.org"_s);
 
-    KAboutData aboutData(u"spectacle"_s,
+    KAboutData aboutData(u"screenies"_s,
         i18n("Sonic Screenies"),
         QStringLiteral(SPECTACLE_VERSION),
-        i18n("KDE Screenshot Utility"),
+        i18n("SonicDE Screenshot Utility"),
         KAboutLicense::GPL_V2,
         i18n("© 2015 Boudhayan Gupta"));
+    aboutData.setOrganizationDomain(QByteArrayLiteral("sonicde.org"));
+    aboutData.setHomepage(u"https://github.com/Sonic-DE/sonic-screenies"_s);
+    aboutData.setBugAddress(QByteArrayLiteral("https://github.com/Sonic-DE/sonic-screenies/issues"));
+    // Keep the desktop/shortcut ID stable so existing shortcut assignments are
+    // preserved. Its activation entry points at the new Screenies bus name.
+    aboutData.setDesktopFileName(u"org.kde.spectacle"_s);
     aboutData.addAuthor(u"Boudhayan Gupta"_s, {}, u"bgupta@kde.org"_s);
     aboutData.addAuthor(u"David Redondo"_s, {}, u"kde@david-redondo.de"_s);
     aboutData.addAuthor(u"Noah Davis"_s, {}, u"noahadvs@gmail.com"_s);
+    aboutData.addAuthor(u"Joseph Crowell"_s, {}, u"joseph.w.crowell@gmail.com"_s);
     aboutData.setTranslator(i18nc("NAME OF TRANSLATORS", "Your names"), i18nc("EMAIL OF TRANSLATORS", "Your emails"));
     KAboutData::setApplicationData(aboutData);
     app.setWindowIcon(QIcon::fromTheme(u"sonic-screenies"_s));
@@ -98,8 +106,25 @@ int main(int argc, char **argv)
     QObject::connect(qApp, &QApplication::aboutToQuit, Settings::self(), &Settings::save);
     QObject::connect(spectacleCore, &SpectacleCore::applicationQuitRequested, &app, &QCoreApplication::quit, Qt::QueuedConnection);
 
-    if (auto dbusAdapter = new SpectacleDBusAdapter(spectacleCore); !QDBusConnection::sessionBus().registerObject(u"/org/kde/Spectacle"_s, dbusAdapter)) {
-        qWarning("Failed to register the DBus interface");
+    auto* dbusAdapter = new SpectacleDBusAdapter(spectacleCore);
+    new LegacySpectacleDBusAdapter(dbusAdapter, spectacleCore);
+    for (const auto& path : {u"/org/sonicde/Screenies"_s, u"/org/kde/Spectacle"_s}) {
+        if (!QDBusConnection::sessionBus().registerObject(path, spectacleCore, QDBusConnection::ExportAdaptors)) {
+            qWarning().noquote() << "Failed to register the DBus capture interface at" << path;
+        }
+    }
+
+    // KDBusService owns org.sonicde.screenies and its application activation
+    // object at /org/sonicde/screenies. Retain the old activation path and bus
+    // names only as compatibility aliases for existing launchers and scripts.
+    if (!QDBusConnection::sessionBus().registerObject(u"/org/kde/spectacle"_s, &service, QDBusConnection::ExportAdaptors)) {
+        qWarning("Failed to register the legacy DBus activation path");
+    }
+    for (const auto& name : {u"org.kde.spectacle"_s, u"org.kde.Spectacle"_s}) {
+        if (!QDBusConnection::sessionBus().registerService(name)) {
+            qWarning().noquote() << "Failed to register the legacy DBus service name" << name << ':'
+                                 << QDBusConnection::sessionBus().lastError().message();
+        }
     }
 
     return app.exec();

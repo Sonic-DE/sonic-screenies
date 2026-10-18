@@ -322,6 +322,7 @@ SpectacleCore::SpectacleCore(QObject *parent)
                 ? i18nc("recording notification message without shortcut", "To finish the recording, click the pulsing red System Tray icon.")
                 : xi18nc("recording notification message with shortcut", "To finish the recording, click the pulsing red System Tray icon or press <shortcut>%1</shortcut>.", stopShortcut.toString(QKeySequence::NativeText));
             auto notification = new KNotification(u"notification"_s, KNotification::CloseOnTimeout | KNotification::DefaultEvent, this);
+            notification->setComponentName(u"spectacle"_s); // Existing notifyrc and user notification rules.
             notification->setTitle(messageTitle);
             notification->setText(messageBody);
             notification->setIconName(u"media-record"_s);
@@ -383,6 +384,7 @@ SpectacleCore::SpectacleCore(QObject *parent)
                                   "Click to stop rendering early (this will lose data)",
                                   recordedTime());
             auto notification = new KNotification(u"notification"_s, KNotification::CloseOnTimeout | KNotification::DefaultEvent, this);
+            notification->setComponentName(u"spectacle"_s);
             notification->setTitle(messageTitle);
             notification->setText(messageBody);
             notification->setIconName(u"process-working-symbolic"_s);
@@ -581,6 +583,7 @@ SpectacleCore::SpectacleCore(QObject *parent)
         }
 
         auto notification = new KNotification(u"ocrTextExtracted"_s, KNotification::CloseOnTimeout, nullptr);
+        notification->setComponentName(u"spectacle"_s);
         notification->setTitle(i18nc("@info:notification title", "Text Extracted"));
 
         notifications.append(notification);
@@ -1315,6 +1318,7 @@ void SpectacleCore::doNotify(ScreenCapture type, const ExportManager::Actions &a
         notification = new KNotification(u"recordingSaved"_s, KNotification::CloseOnTimeout, nullptr);
         title = RecordingModeModel::recordingModeLabel(m_lastRecordingMode);
     }
+    notification->setComponentName(u"spectacle"_s);
     notification->setTitle(title);
 
     notifications.append(notification);

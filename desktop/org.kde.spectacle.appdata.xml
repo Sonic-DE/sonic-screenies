@@ -3,8 +3,8 @@
   <id>org.kde.spectacle.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0+</project_license>
-  <developer id="org.kde">
-    <name translate="no">KDE</name>
+  <developer id="org.sonicde">
+    <name translate="no">SonicDE</name>
   </developer>
   <name>Screenies</name>
   <name xml:lang="ar">لقطات الشاشة</name>
@@ -534,10 +534,9 @@
       <image>https://cdn.kde.org/screenshots/spectacle/spectacle.png</image>
     </screenshot>
   </screenshots>
-  <url type="homepage">https://invent.kde.org/plasma/spectacle</url>
-  <url type="bugtracker">https://bugs.kde.org/enter_bug.cgi?format=guided&amp;product=spectacle</url>
-  <url type="donation">https://www.kde.org/community/donations/?app=spectacle&amp;source=appdata</url>
-  <project_group>KDE</project_group>
+  <url type="homepage">https://github.com/Sonic-DE/sonic-screenies</url>
+  <url type="bugtracker">https://github.com/Sonic-DE/sonic-screenies/issues</url>
+  <project_group>SonicDE</project_group>
   <provides>
     <binary>sonic-screenies</binary>
   </provides>

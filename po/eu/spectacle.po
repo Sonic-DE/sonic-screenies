@@ -1844,8 +1844,8 @@ msgstr "Spectacle"
 
 #: src/Main.cpp:46
 #, kde-format
-msgid "KDE Screenshot Utility"
-msgstr "KDE pantaila-argazki baliagarritasuna"
+msgid "SonicDE Screenshot Utility"
+msgstr "SonicDE pantaila-argazki baliagarritasuna"
 
 #: src/Main.cpp:48
 #, kde-format
@@ -1863,17 +1863,6 @@ msgstr "Iñigo Salvador Azurmendi"
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "Xalba@euskalnet.net"
-
-#: src/Main.cpp:70
-#, kde-format
-msgid ""
-"On Wayland, Spectacle requires KDE Plasma's KWin compositor, which does not "
-"seem to be available. Use Spectacle on KDE Plasma, or use a different "
-"screenshot tool."
-msgstr ""
-"«Wayland»en, «Spectacle»k KDE Plasmaren KWin konposatzailea behar du, eta ez "
-"dirudi instalatuta dagoenik. Erabili «Spectacle» KDE Plasman, edo erabili "
-"pantaila-argazkietarako beste tresna bat."
 
 #: src/OcrManager.cpp:578
 #, kde-format

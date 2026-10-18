@@ -2,6 +2,7 @@
 Description=Sonic Screenies screenshot capture utility
 
 [Service]
+Type=dbus
 ExecStart=@KDE_INSTALL_FULL_BINDIR@/sonic-screenies --dbus
-BusName=org.kde.Spectacle
+BusName=org.sonicde.screenies
 KillMode=process

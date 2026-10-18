@@ -71,11 +71,11 @@
 
         <keywordset>
             <keyword
->KDE</keyword>
+>SonicDE</keyword>
             <keyword
 >spectacle</keyword>
             <keyword
->kdegraphics</keyword>
+>screenies</keyword>
             <keyword
 >Bildschirmfoto</keyword>
             <keyword
@@ -94,7 +94,7 @@
 
         <para
 >Bei Problemen und für Verbesserungsvorschläge wenden Sie sich bitte an das <ulink url="https://bugskde.org/"
->&kde;-Fehlerverfolgungs-System</ulink
+>SonicDE-Fehlerverfolgungs-System</ulink
 >..</para>
     </chapter>
 
@@ -454,7 +454,7 @@
                         <para
 >Öffnet die bekannten Menüeinträge, die im Abschnitt über das Menü <ulink url="help:/fundamentals/menus.html#menus-help"
 >Hilfe</ulink
-> der &kde;-Grundlagen beschrieben werden.</para>
+> der SonicDE-Grundlagen beschrieben werden.</para>
                     </listitem>
                 </varlistentry>
                 <varlistentry>
@@ -818,8 +818,8 @@
 >Ziehen Sie ein Bildschirmfoto in ein Dateiverwaltungsfenster, erscheint ein Dialog, in dem Sie den Dateinamen eingeben und das Bildformat wählen können. Die Datei wird dann in den aktuellen Ordner eingefügt.</para>
 
             <para
->Ziehen Sie ein Bildschirmfoto in ein Textfeld, wird der Pfad zur temporär gespeicherten Datei eingefügt. Diese Funktion können Sie benutzen, um zum Beispiel ein Bildschirmfoto mit Webformularen hochzuladen oder zu einen Fehlerbericht im <ulink url="https://bugs.kde.org/"
->&kde;-Fehlerverfolgungssystem</ulink
+>Ziehen Sie ein Bildschirmfoto in ein Textfeld, wird der Pfad zur temporär gespeicherten Datei eingefügt. Diese Funktion können Sie benutzen, um zum Beispiel ein Bildschirmfoto mit Webformularen hochzuladen oder zu einen Fehlerbericht im <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues"
+>SonicDE-Fehlerverfolgungssystem</ulink
 > hinzuzufügen.</para>
 
             <para

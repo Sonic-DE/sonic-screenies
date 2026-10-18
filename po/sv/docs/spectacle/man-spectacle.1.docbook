@@ -22,7 +22,7 @@
 <releaseinfo
 >Spectacle 21.08</releaseinfo>
 <productname
->KDE-program</productname>
+>SonicDE</productname>
 </refentryinfo>
 
 <refmeta>
@@ -330,4 +330,3 @@
 >&gt;</para>
 </refsect1>
 </refentry>
-

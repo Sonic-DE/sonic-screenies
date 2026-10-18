@@ -1,42 +1,27 @@
-# <img src="logo.png" width="48"/> Spectacle - The KDE Screenshot Utility
+# <img src="logo.png" width="48"/> Screenies - The SonicDE Screenshot Utility
 
-Spectacle is a screenshot taking utility for the KDE desktop. Spectacle
-can also be used in non-KDE X11 desktop environments.
-
-![Screenshot of Spectacle](https://cdn.kde.org/screenshots/spectacle/spectacle.png)
+Screenies is a screenshot and screen-recording utility for the SonicDE desktop.
+It can also be used in other X11 desktop environments.
 
 ## Get help
-You can get help in :
-* Forum: https://discuss.kde.org/tag/spectacle
-* Matrix: https://matrix.to/#/#kde:kde.org
-* IRC: irc://irc.libera.chat/kde
+
+Report problems and ask questions in the
+[Screenies issue tracker](https://github.com/Sonic-DE/sonic-screenies/issues).
+
 ## Contributing
 
-Spectacle is developed under the KDE umbrella and uses KDE infrastructure
-for development.
+Screenies is developed as part of SonicDE.
 
 Please see the file [`CONTRIBUTING`](./CONTRIBUTING.md) for details on coding style and how
-to contribute patches. Please note that pull requests on GitHub aren't
-supported. The recommended way of contributing patches is via KDE's
-instance of GitLab at https://invent.kde.org/plasma/spectacle.
+to contribute patches. Submit changes as a
+[pull request on GitHub](https://github.com/Sonic-DE/sonic-screenies/pulls).
 
-When building Spectacle yourself (including when using kde-builder), you may
-find that Spectacle is not authorized to take screenshots or recordings with
-your system's installed KWin. To work around this, you can either also build
-KWin from source, or use the `KWIN_SCREENSHOT_NO_PERMISSION_CHECKS=1`/\
-`KWIN_WAYLAND_NO_PERMISSION_CHECKS=1` environment variables in your session.
+## Releases
 
-## Release Schedule
-
-Spectacle is released by KDE's release service and has three
-major releases every year. They are numbered YY.MM, where YY is the two-
-digit year and MM is the two-digit month. Major releases are made in April,
-August and December every year. The Spectacle version follows the KDE
-release service version.
+See [Screenies releases](https://github.com/Sonic-DE/sonic-screenies/releases)
+for release information.
 
 ## Reporting Bugs
 
-Please report bugs at KDE's Bugzilla, available at https://bugs.kde.org/.
-
-For discussions, the `#kde-devel` IRC channel and the kde-devel mailing list
-are good places to post.
+Please report bugs in the
+[Screenies issue tracker](https://github.com/Sonic-DE/sonic-screenies/issues).
