@@ -21,6 +21,7 @@
 #include "Platforms/ImagePlatformXcb.h"
 #include "Platforms/PlatformLoader.h"
 #include "RecordingModeModel.h"
+#include "ScreenshotTiming.h"
 #include "ShortcutActions.h"
 // generated
 #include "settings.h"
@@ -104,7 +105,7 @@ SpectacleCore::SpectacleCore(QObject *parent)
         unityLauncherUpdate({{u"progress"_s, value.toReal()}});
         const auto windows = SpectacleWindow::instances();
         if (m_delayAnimation->state() != State::Stopped && !windows.isEmpty()) {
-            if (captureTimeRemaining() <= 500 && windows.constFirst()->isVisible()) {
+            if (captureTimeRemaining() <= ScreenshotTiming::windowHideDelay && windows.constFirst()->isVisible()) {
                 SpectacleWindow::setVisibilityForAll(QWindow::Hidden);
             }
             SpectacleWindow::setTitleForAll(SpectacleWindow::Timer);
@@ -1180,12 +1181,7 @@ void SpectacleCore::takeNewScreenshot(ImagePlatform::GrabMode grabMode, int time
     timeout = qMax(0, timeout);
     const bool noDelay = timeout == 0;
 
-    if (qobject_cast<ImagePlatformXcb*>(m_imagePlatform.get())) {
-        // X11 compositors require a small delay for window hide animations to settle.
-        // A 50 ms minimum also avoids segfaults from xcb function calls that don't get
-        // replies fast enough.
-        timeout = qMax(timeout, 50);
-    }
+    timeout = ScreenshotTiming::captureDelay(timeout, qobject_cast<ImagePlatformXcb*>(m_imagePlatform.get()) != nullptr);
 
     if (noDelay) {
         SpectacleWindow::setVisibilityForAll(QWindow::Hidden);

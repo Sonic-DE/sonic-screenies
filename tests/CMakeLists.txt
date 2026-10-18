@@ -97,6 +97,13 @@ ecm_add_test(
 set_tests_properties(audio_pcm_mixer_test PROPERTIES LABELS "headless;audio")
 
 ecm_add_test(
+    ScreenshotTimingTest.cpp
+    TEST_NAME "screenshot_timing_test"
+    LINK_LIBRARIES Qt::Test
+)
+set_tests_properties(screenshot_timing_test PROPERTIES LABELS "headless;screenshot")
+
+ecm_add_test(
     AnimatedEncoderWorkerTest.cpp
     ../src/Platforms/Encoding/AnimatedEncoderWorker.cpp
     TEST_NAME "animated_encoder_worker_test"
