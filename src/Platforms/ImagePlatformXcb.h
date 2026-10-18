@@ -67,7 +67,7 @@ private:
     QImage postProcessImage(QImage &image, QRect rect, bool blendPointer);
     QImage getImageFromDrawable(xcb_drawable_t xcbDrawable, const QRect &rect);
     QImage getToplevelImage(QRect rect, bool blendPointer);
-    QImage getWindowImage(xcb_window_t window, bool blendPointer);
+    QImage getWindowImage(xcb_window_t window, bool blendPointer, bool includeDecorations);
 
     void grabAllScreens(bool includePointer, bool crop = false);
     void grabCurrentScreen(bool includePointer);

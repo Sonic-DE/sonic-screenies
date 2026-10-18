@@ -7,6 +7,7 @@
 #include "ImagePlatformXcb.h"
 #include "ImageMetaData.h"
 #include "Platforms/X11/X11TargetSelector.h"
+#include "Platforms/X11/X11WindowCapture.h"
 
 #include <xcb/randr.h>
 #include <xcb/xcb_cursor.h>
@@ -32,6 +33,7 @@
 #include <private/qtx11extras_p.h>
 #include <QtMath>
 
+#include <KLocalizedString>
 #include <KWindowInfo>
 #include <KWindowSystem>
 #include <KX11Extras>
@@ -462,36 +464,14 @@ void setWindowTitle(QImage &image, xcb_window_t window)
     ImageMetaData::setWindowTitle(image, KX11Extras::readNameProperty(window, XA_WM_NAME));
 }
 
-QImage ImagePlatformXcb::getWindowImage(xcb_window_t window, bool blendPointer)
+QImage ImagePlatformXcb::getWindowImage(xcb_window_t window, bool blendPointer, bool includeDecorations)
 {
-    auto xcbConn = QX11Info::connection();
-
-    // first get geometry information for our window
-    auto geoCookie = xcb_get_geometry_unchecked(xcbConn, window);
-    XcbReplyPtr<xcb_get_geometry_reply_t> geoReply(xcb_get_geometry_reply(xcbConn, geoCookie, nullptr));
-    QRect windowRect(geoReply->x, geoReply->y, geoReply->width, geoReply->height);
-
-    // then proceed to get an image
-    auto image = getImageFromDrawable(window, windowRect);
-    setWindowTitle(image, window);
-
-    // translate window coordinates to global ones.
-    auto rootGeoCookie = xcb_get_geometry_unchecked(xcbConn, geoReply->root);
-    XcbReplyPtr<xcb_get_geometry_reply_t> rootGeoReply(xcb_get_geometry_reply(xcbConn, rootGeoCookie, nullptr));
-    auto translateCookie = xcb_translate_coordinates_unchecked(xcbConn, window, geoReply->root, rootGeoReply->x, rootGeoReply->y);
-    XcbReplyPtr<xcb_translate_coordinates_reply_t> translateReply(xcb_translate_coordinates_reply(xcbConn, translateCookie, nullptr));
-
-    // adjust local to global coordinates.
-    windowRect.moveRight(windowRect.x() + translateReply->dst_x);
-    windowRect.moveTop(windowRect.y() + translateReply->dst_y);
-
-    // if the window capture failed, try to obtain one from the full screen.
-    if (image.isNull()) {
-        image = getToplevelImage(windowRect, blendPointer);
-        setWindowTitle(image, window);
-        return image;
+    auto capture = X11::captureWindow(QX11Info::connection(), window, includeDecorations);
+    if (capture.image.isNull()) {
+        return {};
     }
-    return postProcessImage(image, windowRect, blendPointer);
+    setWindowTitle(capture.image, window);
+    return postProcessImage(capture.image, QRect(capture.position, capture.image.size()), blendPointer);
 }
 
 /* -- Grabber Methods -------------------------------------------------------------------------- */
@@ -532,35 +512,12 @@ void ImagePlatformXcb::grabCurrentScreen(bool includePointer)
 
 void ImagePlatformXcb::grabApplicationWindow(xcb_window_t window, bool includePointer, bool includeDecorations)
 {
-    // if the user doesn't want decorations captured, we're in luck. This is
-    // the easiest bit
-
-    auto image = getWindowImage(window, includePointer);
-    image.setDevicePixelRatio(qGuiApp->devicePixelRatio());
-    if (!includeDecorations || window == QX11Info::appRootWindow()) {
-        Q_EMIT newScreenshotTaken(image);
+    auto image = getWindowImage(window, includePointer, includeDecorations);
+    if (image.isNull()) {
+        Q_EMIT newScreenshotFailed(i18n("Could not capture the selected window without including desktop content."));
         return;
     }
-
-    // if the user wants the window decorations, things get a little tricky.
-    // we can't simply get a handle to the window manager frame window and
-    // just grab it, because some compositing window managers (yes, kwin
-    // included) do not render the window onto the frame but keep it in a
-    // separate opengl buffer, so grabbing this window is going to simply
-    // give us a transparent image with the frame and titlebar.
-
-    // all is not lost. what we need to do is grab the image of the entire
-    // desktop, find the geometry of the window including its frame, and
-    // crop the root image accordingly.
-
-    KWindowInfo windowInfo(window, NET::WMFrameExtents);
-    if (windowInfo.valid()) {
-        auto frameGeom = windowInfo.frameGeometry();
-        image = getToplevelImage(frameGeom, includePointer);
-        setWindowTitle(image, window);
-    }
-
-    // fallback is window without the frame
+    image.setDevicePixelRatio(qGuiApp->devicePixelRatio());
     Q_EMIT newScreenshotTaken(image);
 }
 
@@ -578,14 +535,15 @@ void ImagePlatformXcb::grabTransientWithParent(bool includePointer, bool include
 {
     auto window = getWindowUnderCursor();
 
-    // grab the image early
-    auto image = getToplevelImage(QRect(), false);
-    image.setDevicePixelRatio(qGuiApp->devicePixelRatio());
+    if (window == XCB_NONE || window == QX11Info::appRootWindow()) {
+        Q_EMIT newScreenshotFailed(i18n("No application window was selected."));
+        return;
+    }
 
     // now that we know we have a transient window, let's
     // find other possible transient windows and the app window itself.
-    QRegion clipRegion;
     QSet<xcb_window_t> transientWindows;
+    QList<xcb_window_t> familyOrder;
     auto parentWindow = window;
     const QRect desktopRect(0, 0, 1, 1);
     do {
@@ -599,11 +557,12 @@ void ImagePlatformXcb::grabTransientWithParent(bool includePointer, bool include
         // if the window is a QDialog without a parent.
         // BUG: 376350
         if (winRect != desktopRect) {
-            clipRegion += winRect;
+            familyOrder.prepend(winId);
         }
 
         // Continue walking only if this is a transient window (having a parent)
-    } while (parentWindow != XCB_WINDOW_NONE && !transientWindows.contains(parentWindow));
+    } while (parentWindow != XCB_WINDOW_NONE && parentWindow != QX11Info::appRootWindow()
+        && !transientWindows.contains(parentWindow));
 
     // All parents are known now, find other transient children.
     // Assume that the lowest window is behind everything else, then if a new
@@ -617,20 +576,36 @@ void ImagePlatformXcb::grabTransientWithParent(bool includePointer, bool include
         if (transientWindows.contains(parentWindow)) {
             if (!transientWindows.contains(winId)) {
                 transientWindows << winId;
-                clipRegion += winRect;
+                familyOrder.append(winId);
             }
         }
     }
 
-    // we can probably go ahead and generate the image now
-    QImage clippedImage(image.size(), QImage::Format_ARGB32);
-    clippedImage.fill(Qt::transparent);
-
-    QPainter painter(&clippedImage);
-    painter.setClipRegion(clipRegion);
-    painter.drawImage(0, 0, image);
+    // Composite only isolated surfaces from this transient family. Cropping a
+    // desktop screenshot would disclose unrelated windows through transparent
+    // areas and through gaps between dialogs.
+    QList<X11::WindowImage> captures;
+    QRect bounds;
+    for (auto winId : std::as_const(familyOrder)) {
+        auto capture = X11::captureWindow(QX11Info::connection(), winId, includeDecorations);
+        if (capture.image.isNull()) {
+            Q_EMIT newScreenshotFailed(i18n("Could not capture the selected window without including desktop content."));
+            return;
+        }
+        bounds |= QRect(capture.position, capture.image.size());
+        captures.append(std::move(capture));
+    }
+    QImage image(bounds.size(), QImage::Format_ARGB32_Premultiplied);
+    if (image.isNull()) {
+        Q_EMIT newScreenshotFailed(i18n("Could not capture the selected window without including desktop content."));
+        return;
+    }
+    image.fill(Qt::transparent);
+    QPainter painter(&image);
+    for (const auto& capture : std::as_const(captures)) {
+        painter.drawImage(capture.position - bounds.topLeft(), capture.image);
+    }
     painter.end();
-    image = clippedImage.copy(clipRegion.boundingRect());
 
     // add a drop shadow if requested
     if (includeShadow) {
@@ -638,10 +613,12 @@ void ImagePlatformXcb::grabTransientWithParent(bool includePointer, bool include
     }
 
     if (includePointer) {
-        auto topLeft = clipRegion.boundingRect().topLeft() - QPoint(20, 20);
+        auto topLeft = bounds.topLeft() - (includeShadow ? QPoint(20, 20) : QPoint());
         image = blendCursorImage(image, QRect(topLeft, QSize(image.width(), image.height())));
     }
 
+    setWindowTitle(image, window);
+    image.setDevicePixelRatio(qGuiApp->devicePixelRatio());
     Q_EMIT newScreenshotTaken(image);
 }
 

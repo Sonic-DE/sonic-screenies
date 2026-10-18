@@ -79,7 +79,7 @@ if (NOT TARGET KF6::PrisonScanner )
     message(SEND_ERROR "Prison built without required PrisonScanner component")
 endif()
 
-find_package(XCB REQUIRED COMPONENTS XFIXES IMAGE UTIL CURSOR RANDR)
+find_package(XCB REQUIRED COMPONENTS XFIXES IMAGE UTIL CURSOR RANDR COMPOSITE SHAPE)
 find_package(FFmpeg REQUIRED COMPONENTS AVCODEC AVFORMAT AVUTIL SWSCALE)
 find_package(PulseAudio REQUIRED)
 find_package(PkgConfig REQUIRED)

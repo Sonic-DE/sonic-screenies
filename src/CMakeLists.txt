@@ -64,6 +64,7 @@ target_sources(spectacle PRIVATE
     Platforms/X11/X11FrameGrabWorker.cpp
     Platforms/X11/X11ScreenModel.cpp
     Platforms/X11/X11TargetSelector.cpp
+    Platforms/X11/X11WindowCapture.cpp
     RecordingModeModel.cpp
     ShortcutActions.cpp
     SpectacleCore.cpp
@@ -84,6 +85,7 @@ target_sources(spectacle PRIVATE
     Platforms/X11/X11FrameGrabWorker.h
     Platforms/X11/X11ScreenModel.h
     Platforms/X11/X11TargetSelector.h
+    Platforms/X11/X11WindowCapture.h
     PlatformOutput.h
     PlatformStartup.h
 )
@@ -94,6 +96,8 @@ target_link_libraries(spectacle PRIVATE
     XCB::UTIL
     XCB::CURSOR
     XCB::RANDR
+    XCB::COMPOSITE
+    XCB::SHAPE
     FFmpeg::AVCODEC
     FFmpeg::AVFORMAT
     FFmpeg::AVUTIL
