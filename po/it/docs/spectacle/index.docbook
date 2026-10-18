@@ -71,11 +71,11 @@
 
         <keywordset>
             <keyword
->KDE</keyword>
+>SonicDE</keyword>
             <keyword
 >spectacle</keyword>
             <keyword
->kdegraphics</keyword>
+>screenies</keyword>
             <keyword
 >schermata</keyword>
             <keyword
@@ -93,8 +93,8 @@
 >&spectacle; è un'applicazione per catturare e modificare schermate del desktop. Può acquisire l'immagine dell'intero desktop, di un singolo monitor, della finestra attiva, della finestra dietro al cursore, o di una regione rettangolare dello schermo. L'immagine può quindi essere annotata, stampata, inviata ad altre applicazioni per ulteriori modifiche, o salvata rapidamente così com'è.</para>
 
         <para
->Segnala qualsiasi problema o richiesta di miglioramenti sul <ulink url="https://bugs.kde.org/"
->Sistema di gestione dei bug di &kde;</ulink
+>Segnala qualsiasi problema o richiesta di miglioramenti sul <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues"
+>Sistema di gestione dei bug di SonicDE</ulink
 >.</para>
     </chapter>
 
@@ -438,7 +438,7 @@
                         <para
 >L'opzione <guilabel
 >Esci dopo il salvataggio o la copia manuali</guilabel
-> chiuderà &spectacle; dopo un'operazione di salvataggio o di copia. Note come una schermata copiata negli appunti sarà mantenuta solo se è in esecuzione un gestore di appunti che gestisce immagini. Klipper di KDE può essere configurato in questo modo facendo clic col pulsante destro sulla sua icona, selezionando <guilabel
+> chiuderà &spectacle; dopo un'operazione di salvataggio o di copia. Note come una schermata copiata negli appunti sarà mantenuta solo se è in esecuzione un gestore di appunti che gestisce immagini. Klipper di SonicDE può essere configurato in questo modo facendo clic col pulsante destro sulla sua icona, selezionando <guilabel
 >Configura gli appunti...</guilabel
 > e deselezionando <guilabel
 >Ignora le immagini</guilabel
@@ -470,7 +470,7 @@
                         <para
 >Fornisce le voci di menu comuni descritte nella sezione del <ulink url="help:/fundamentals/menus.html#menus-help"
 >menu Aiuto</ulink
-> dei Fondamentali di &kde;.</para>
+> dei Fondamentali di SonicDE.</para>
                     </listitem>
                 </varlistentry>
                 <varlistentry>
@@ -829,8 +829,8 @@
 >Se trascini una schermata nella finestra di un gestore di file, apparirà una finestra in cui potrai decidere il nome del file ed il formato dell'immagine, e il file verrà inserito nella cartella indicata.</para>
 
             <para
->Se trascini la schermata in una casella di testo, verrà inserito il percorso al file temporaneo in cui è salvata la schermata. Questo è utile, per esempio, per caricare una schermata con un modulo Web o per allegare delle schermate a delle segnalazioni di errori sul <ulink url="https://bugs.kde.org/"
->sistema di tracciamento degli errori di &kde;</ulink
+>Se trascini la schermata in una casella di testo, verrà inserito il percorso al file temporaneo in cui è salvata la schermata. Questo è utile, per esempio, per caricare una schermata con un modulo Web o per allegare delle schermate a delle segnalazioni di errori sul <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues"
+>sistema di tracciamento degli errori di SonicDE</ulink
 >.</para>
 
             <para

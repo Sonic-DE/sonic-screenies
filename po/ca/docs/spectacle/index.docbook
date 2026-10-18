@@ -57,11 +57,11 @@
 
         <keywordset>
             <keyword
->KDE</keyword>
+>SonicDE</keyword>
             <keyword
 >spectacle</keyword>
             <keyword
->kdegraphics</keyword>
+>screenies</keyword>
             <keyword
 >captura de pantalla</keyword>
             <keyword
@@ -79,8 +79,8 @@
 >L'&spectacle; és una aplicació per a prendre i editar captures de pantalla de l'escriptori. Pot capturar imatges de tot l'escriptori, un sol monitor, la finestra activa, la finestra sota el ratolí o d'una regió rectangular de la pantalla. Les imatges es poden anotar, imprimir, enviar a altres aplicacions per a la seva manipulació o desar-les com estan.</para>
 
         <para
->Podeu informar de qualsevol problema o petició de característica al <ulink url="https://bugs.kde.org/"
->sistema de seguiment d'errors del &kde;</ulink
+>Podeu informar de qualsevol problema o petició de característica al <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues"
+>sistema de seguiment d'errors del SonicDE</ulink
 > (escriviu-hi en anglès).</para>
     </chapter>
 
@@ -420,7 +420,7 @@
                         <para
 >L'opció <guilabel
 >Surt després de desar o copiar manualment</guilabel
-> sortirà de l'&spectacle; després de qualsevol operació de desament o de còpia. Cal tenir en compte que una captura de pantalla només es conservarà si esteu executant un gestor del porta-retalls que accepti imatges. El &klipper; del &kde; es pot configurar d'aquesta manera fent clic dret sobre la seva icona, seleccionant <guilabel
+> sortirà de l'&spectacle; després de qualsevol operació de desament o de còpia. Cal tenir en compte que una captura de pantalla només es conservarà si esteu executant un gestor del porta-retalls que accepti imatges. El &klipper; del SonicDE es pot configurar d'aquesta manera fent clic dret sobre la seva icona, seleccionant <guilabel
 >Configura el porta-retalls...</guilabel
 > i desmarcant <guilabel
 >Ignora les imatges</guilabel
@@ -452,7 +452,7 @@
                         <para
 >Dona la descripció dels elements de menú comuns al <ulink url="help:/fundamentals/menus.html#menus-help"
 >menú Ajuda</ulink
-> en els Fonaments del &kde;.</para>
+> en els Fonaments del SonicDE.</para>
                     </listitem>
                 </varlistentry>
                 <varlistentry>
@@ -810,8 +810,8 @@
 >Si arrossegueu una captura de pantalla en una finestra del gestor de fitxers, apareixerà un diàleg des d'on podreu editar el nom del fitxer i seleccionar el format de la imatge i el fitxer s'inserirà a la carpeta.</para>
 
             <para
->Si arrossegueu la pantalla a un quadre de text, serà introduït el camí d'accés al fitxer temporal. Per exemple, això és útil per a pujar una captura de pantalla a través de formularis web o per a adjuntar imatges als informes d'error al <ulink url="https://bugs.kde.org/"
->sistema de seguiment d'errors del &kde;</ulink
+>Si arrossegueu la pantalla a un quadre de text, serà introduït el camí d'accés al fitxer temporal. Per exemple, això és útil per a pujar una captura de pantalla a través de formularis web o per a adjuntar imatges als informes d'error al <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues"
+>sistema de seguiment d'errors del SonicDE</ulink
 >.</para>
 
             <para

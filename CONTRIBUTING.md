@@ -11,8 +11,8 @@ following rules are followed:
       commit.
    3. Do not fix coding style and code issues in the same commit.
 
-For larger commits, please use GitLab or send
-and e-mail to the maintainer. A rule of thumb to check whether your
+For larger commits, please open a [pull request on GitHub](https://github.com/Sonic-DE/sonic-screenies/pulls).
+A rule of thumb to check whether your
 commit is a major commit is if it affects more than 5 lines of code.
 
 Break down larger fixes into smaller commits. Even if you push the
@@ -23,7 +23,7 @@ committed without prior notification.
 
 ## Coding Style
 
-Spectacle follows the KDELibs coding style, with a few exceptions:
+Screenies follows the KDELibs coding style, with a few exceptions:
 
    1. In class definitions, access modifiers are aligned along with
       member declarations, i.e., at one level right. E.g.:
@@ -44,8 +44,7 @@ Spectacle follows the KDELibs coding style, with a few exceptions:
       come at the end, after all member functions. This is not strictly
       enforced, but is a good rule to follow.
 
-   2. Member variables follow the format `mCamelCase`, and `not m_camelCase`
-      which is more common throughout the rest of the KDE Applications.
+   2. Member variables follow the format `mCamelCase`, not `m_camelCase`.
 
    3. Source files are mixed case, named the same as the class they
       contain. i.e., `SomeClass` will be defined in `SomeClass.cpp`, not

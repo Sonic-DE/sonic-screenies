@@ -85,11 +85,11 @@
 
         <keywordset>
             <keyword
->KDE</keyword>
+>SonicDE</keyword>
             <keyword
 >spectacle</keyword>
             <keyword
->kdegraphics</keyword>
+>screenies</keyword>
             <keyword
 >Captura de tela</keyword>
             <keyword
@@ -107,8 +107,8 @@
 >&spectacle; é um aplicativo simples para capturar imagens da tela. É capaz de capturar imagens de toda a tela, de apenas um monitor, da janela ativa, da janela que estiver sob o ponteiro do mouse ou de uma região retangular. As imagens podem ser impressas, enviadas para outros aplicativos ou salvas em diversos formatos.</para>
 
         <para
->Comunique quaisquer problemas ou solicitações de novos recursos no <ulink url="https://bugs.kde.org/"
->Sistema de registro de erros do &kde;</ulink
+>Comunique quaisquer problemas ou solicitações de novos recursos no <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues"
+>Sistema de registro de erros do SonicDE</ulink
 >.</para>
     </chapter>
 
@@ -454,7 +454,7 @@
                         <para
 >A opção <guilabel
 >Sair após salvar ou copiar manualmente</guilabel
-> encerrará o &spectacle; após qualquer operação de salvar ou copiar. Observe que uma captura de tela copiada só será mantida se você estiver executando um gerenciador de área de transferência que aceite imagens. O KDE Klipper pode ser configurado dessa maneira clicando com o botão direito do mouse em seu ícone, selecionando <guilabel
+> encerrará o &spectacle; após qualquer operação de salvar ou copiar. Observe que uma captura de tela copiada só será mantida se você estiver executando um gerenciador de área de transferência que aceite imagens. O SonicDE Klipper pode ser configurado dessa maneira clicando com o botão direito do mouse em seu ícone, selecionando <guilabel
 >Configurar área de transferência...</guilabel
 >, e desmarcando <guilabel
 >Ignorar imagens</guilabel
@@ -486,7 +486,7 @@
                         <para
 >Fornece os itens de menu comuns descritos no <ulink url="help:/fundamentals/menus.html#menus-help"
 >Menu de Ajuda</ulink
-> dos Fundamentos do  &kde;.</para>
+> dos Fundamentos do  SonicDE.</para>
                     </listitem>
                 </varlistentry>
                 <varlistentry>
@@ -844,8 +844,8 @@
 >Se arrastar uma imagem para uma janela do gerenciador de arquivos, uma caixa de diálogo irá aparecer para indicação do nome do arquivo e seu formato, de forma a inseri-lo na pasta atual.</para>
 
             <para
->Se arrastar a imagem capturada para um campo de texto, será introduzido o caminho do arquivo temporário. Isso é útil, por exemplo, para enviar uma imagem através de formulários na Web ou anexar imagens em relatórios de erros no <ulink url="https://bugs.kde.org/"
->sistema de registro de erros do &kde;</ulink
+>Se arrastar a imagem capturada para um campo de texto, será introduzido o caminho do arquivo temporário. Isso é útil, por exemplo, para enviar uma imagem através de formulários na Web ou anexar imagens em relatórios de erros no <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues"
+>sistema de registro de erros do SonicDE</ulink
 >.</para>
 
             <para

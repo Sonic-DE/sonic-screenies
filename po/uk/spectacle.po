@@ -1862,8 +1862,8 @@ msgstr "Spectacle"
 
 #: src/Main.cpp:46
 #, kde-format
-msgid "KDE Screenshot Utility"
-msgstr "Утиліта знімків екрана KDE"
+msgid "SonicDE Screenshot Utility"
+msgstr "Утиліта знімків екрана SonicDE"
 
 #: src/Main.cpp:48
 #, kde-format
@@ -1881,17 +1881,6 @@ msgstr "Юрій Чорноіван"
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "yurchor@ukr.net"
-
-#: src/Main.cpp:70
-#, kde-format
-msgid ""
-"On Wayland, Spectacle requires KDE Plasma's KWin compositor, which does not "
-"seem to be available. Use Spectacle on KDE Plasma, or use a different "
-"screenshot tool."
-msgstr ""
-"У Wayland для роботи Spectacle потрібен засіб композиції Плазми KDE, KWin, "
-"якого, здається, немає у вашій системі. Скористайтеся Spectacle у Плазмі KDE "
-"або використайте іншу програму для створення знімків."
 
 #: src/OcrManager.cpp:578
 #, kde-format

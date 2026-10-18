@@ -9,7 +9,8 @@
 <include>Platforms/VideoPlatform.h</include>
 <include>Gui/SettingsDialog/SettingsUtils.h</include>
 <include>KLocalizedString</include>
-<kcfgfile />
+<!-- Preserve existing settings when the application/D-Bus identity changes. -->
+<kcfgfile name="spectaclerc" />
 <group name="General">
     <entry name="launchAction" type="Enum">
         <label>What to do when Spectacle is launched</label>

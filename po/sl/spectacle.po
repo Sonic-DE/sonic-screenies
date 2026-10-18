@@ -1858,8 +1858,8 @@ msgstr "Spectacle"
 
 #: src/Main.cpp:46
 #, kde-format
-msgid "KDE Screenshot Utility"
-msgstr "KDE-jev pripomoček za zajem zaslona"
+msgid "SonicDE Screenshot Utility"
+msgstr "SonicDE-jev pripomoček za zajem zaslona"
 
 #: src/Main.cpp:48
 #, kde-format
@@ -1877,17 +1877,6 @@ msgstr "Jure Repinc,Andrej Mernik,Matjaž Jeran"
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "jlp@holodeck1.com,andrejm@ubuntu.si,matjaz.jeran@amis.net"
-
-#: src/Main.cpp:70
-#, kde-format
-msgid ""
-"On Wayland, Spectacle requires KDE Plasma's KWin compositor, which does not "
-"seem to be available. Use Spectacle on KDE Plasma, or use a different "
-"screenshot tool."
-msgstr ""
-"Na Waylandu Spectacle potrebuje KDE-jev upravljalnik skladnje KWin, ki kot "
-"kaže ni na voljo. Uporabljajte Spectacle s KWin ali uporabljajte drugo "
-"orodje za zajem zaslonov."
 
 #: src/OcrManager.cpp:578
 #, kde-format

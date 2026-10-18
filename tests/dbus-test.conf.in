@@ -1,0 +1,14 @@
+<!DOCTYPE busconfig PUBLIC "-//freedesktop//DTD D-Bus Bus Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+<busconfig>
+  <type>session</type>
+  <listen>unix:tmpdir=/tmp</listen>
+  <!-- Only fixtures pointing at the built Screenies binary may be activated;
+       never load the user's installed desktop services. -->
+  <servicedir>@CMAKE_CURRENT_BINARY_DIR@/dbus-activation-services</servicedir>
+  <policy context="default">
+    <allow own="*"/>
+    <allow send_destination="*"/>
+    <allow receive_sender="*"/>
+  </policy>
+</busconfig>

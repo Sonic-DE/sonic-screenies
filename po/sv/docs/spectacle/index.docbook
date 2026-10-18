@@ -71,11 +71,11 @@
 
         <keywordset>
             <keyword
->KDE</keyword>
+>SonicDE</keyword>
             <keyword
 >spectacle</keyword>
             <keyword
->kdegraphics</keyword>
+>screenies</keyword>
             <keyword
 >skärmbild</keyword>
             <keyword
@@ -93,8 +93,8 @@
 >&spectacle; är ett program för att ta skärmbilder av skrivbordet och redigera dem. Det kan ta bilder av hela skrivbordet, en enda bildskärm, fönstret som för närvarande är aktivt, fönstret som för närvarande är under musen, eller ett rektangulärt skärmområde. Bilderna kan därefter kommenteras, skrivas ut, skickas till andra program för behandling, eller snabbt sparas som de är.</para>
 
         <para
->Var snäll rapportera eventuella problem eller önskemål till <ulink url="https://bugs.kde.org/"
->&kde;:s felhanteringssystem</ulink
+>Var snäll rapportera eventuella problem eller önskemål till <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues"
+>SonicDE:s felhanteringssystem</ulink
 >.</para>
     </chapter>
 
@@ -428,7 +428,7 @@
                         <para
 >Alternativet <guilabel
 >Avsluta efter Spara eller Kopiera manuellt</guilabel
-> avslutar &spectacle; efter vilken åtgärd för att spara eller kopiera som helst. Observera att en kopierad skärmbild bara behålls om en klippbordshanterare som accepterar bilder används. KDE Klipper kan ställas in på detta sätt genom att högerklicka på ikonen, välja <guilabel
+> avslutar &spectacle; efter vilken åtgärd för att spara eller kopiera som helst. Observera att en kopierad skärmbild bara behålls om en klippbordshanterare som accepterar bilder används. SonicDE Klipper kan ställas in på detta sätt genom att högerklicka på ikonen, välja <guilabel
 >Anpassa klippbordet...</guilabel
 > och avmarkera <guilabel
 >Ignorera bilder</guilabel
@@ -460,7 +460,7 @@
                         <para
 >Ger de vanliga menyalternativen som beskrivs under <ulink url="help:/fundamentals/menus.html#menus-help"
 >Hjälpmeny</ulink
-> i &kde;:s grunder.</para>
+> i SonicDE:s grunder.</para>
                     </listitem>
                 </varlistentry>
                 <varlistentry>
@@ -824,8 +824,8 @@
 >Om man drar en skärmbild till ett filhanteringsfönster, dyker en dialogruta upp där det går att kan redigera filnamn och välja bildformat, så infogas filen i själva katalogen.</para>
 
             <para
->Om skärmbilden dras till en textruta infogas sökvägen till den tillfälligt sparade filen. Det är exempelvis användbart för att ladda upp en skärmbild via webbformulär eller för att lägga till skärmbilder i felrapporter med <ulink url="https://bugs.kde.org/"
->&kde;:s felspårare</ulink
+>Om skärmbilden dras till en textruta infogas sökvägen till den tillfälligt sparade filen. Det är exempelvis användbart för att ladda upp en skärmbild via webbformulär eller för att lägga till skärmbilder i felrapporter med <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues"
+>SonicDE:s felspårare</ulink
 >.</para>
 
             <para

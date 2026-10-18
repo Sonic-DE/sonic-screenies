@@ -6,11 +6,16 @@
 #include "SpectacleCore.h"
 #include "WidgetWindowUtils.h"
 
+#include <KAboutApplicationDialog>
 #include <KAboutData>
 #include <KLocalizedString>
 
+#include <QAction>
 #include <QApplication>
+#include <QDesktopServices>
 #include <QDialog>
+#include <QMessageBox>
+#include <QUrl>
 #include <QWindow>
 
 #include <cstring>
@@ -39,7 +44,22 @@ HelpMenu::HelpMenu(QWidget *parent)
 {
     setTitle(i18nc("@title:menu", "Help"));
     setIcon(QIcon::fromTheme(u"help-contents"_s));
-    addActions(kHelpMenu->menu()->actions());
+    for (auto action : kHelpMenu->menu()->actions()) {
+        if (action == kHelpMenu->action(KHelpMenu::menuAboutKDE)) {
+            auto aboutAction = addAction(i18nc("@action:inmenu", "About SonicDE"));
+            connect(aboutAction, &QAction::triggered, this, &HelpMenu::showAboutSonicDE);
+        } else if (action == kHelpMenu->action(KHelpMenu::menuAboutApp)) {
+            auto aboutAction = addAction(action->icon(), action->text());
+            connect(aboutAction, &QAction::triggered, this, &HelpMenu::showAboutApplication);
+        } else if (action == kHelpMenu->action(KHelpMenu::menuReportBug)) {
+            auto reportAction = addAction(action->icon(), action->text());
+            connect(reportAction, &QAction::triggered, this, [] {
+                QDesktopServices::openUrl(QUrl(KAboutData::applicationData().bugAddress()));
+            });
+        } else if (action != kHelpMenu->action(KHelpMenu::menuDonate)) {
+            addAction(action);
+        }
+    }
     connect(this, &QMenu::triggered, this, &HelpMenu::onTriggered);
 }
 
@@ -69,6 +89,40 @@ void HelpMenu::showAppHelp()
     kHelpMenu->appHelpActivated();
 }
 
+void HelpMenu::showAboutApplication()
+{
+    if (!m_aboutApplicationDialog) {
+        // The framework's automatic Components tab inserts KDE project
+        // branding. Keep the application, author, license and translator pages
+        // without relabeling third-party libraries or their legal attribution.
+        auto dialog = new KAboutApplicationDialog(KAboutData::applicationData(), KAboutApplicationDialog::HideLibraries, this);
+        dialog->setAttribute(Qt::WA_DeleteOnClose);
+        m_aboutApplicationDialog = dialog;
+    }
+    setWidgetTransientParent(m_aboutApplicationDialog, getWidgetTransientParent(this));
+    m_aboutApplicationDialog->show();
+    m_aboutApplicationDialog->windowHandle()->requestActivate();
+}
+
+void HelpMenu::showAboutSonicDE()
+{
+    if (!m_aboutSonicDEDialog) {
+        auto dialog = new QMessageBox(this);
+        dialog->setAttribute(Qt::WA_DeleteOnClose);
+        dialog->setWindowTitle(i18nc("@title:window", "About SonicDE"));
+        dialog->setTextFormat(Qt::RichText);
+        dialog->setTextInteractionFlags(Qt::TextBrowserInteraction);
+        dialog->setText(i18n("<h2>SonicDE</h2>"
+                             "<p>A free and open-source desktop environment.</p>"
+                             "<p><a href=\"https://github.com/Sonic-DE\">SonicDE on GitHub</a></p>"));
+        dialog->setStandardButtons(QMessageBox::Close);
+        m_aboutSonicDEDialog = dialog;
+    }
+    setWidgetTransientParent(m_aboutSonicDEDialog, getWidgetTransientParent(this));
+    m_aboutSonicDEDialog->show();
+    m_aboutSonicDEDialog->windowHandle()->requestActivate();
+}
+
 void HelpMenu::onTriggered(QAction *action)
 {
     auto transientParent = getWidgetTransientParent(this);
@@ -80,15 +134,9 @@ void HelpMenu::onTriggered(QAction *action)
     // KHelpMenu creates these dialogs and sets the parent of KHelpMenu as the parent of the dialogs.
     // KHelpMenu doesn't expose pointers to the dialogs,
     // so we have to search for them in the parent.
-    // 2 of the dialogs we need to find are private types.
-    if (action == kHelpMenu->action(KHelpMenu::menuReportBug)) {
-        dialog = qobject_cast<QDialog *>(findWidgetOfType("KBugReport"));
-    } else if (action == kHelpMenu->action(KHelpMenu::menuSwitchLanguage)) {
+    // The language dialog is a private framework type.
+    if (action == kHelpMenu->action(KHelpMenu::menuSwitchLanguage)) {
         dialog = qobject_cast<QDialog *>(findWidgetOfType("KDEPrivate::KSwitchLanguageDialog"));
-    } else if (action == kHelpMenu->action(KHelpMenu::menuAboutApp)) {
-        dialog = qobject_cast<QDialog *>(findWidgetOfType("KAboutApplicationDialog"));
-    } else if (action == kHelpMenu->action(KHelpMenu::menuAboutKDE)) {
-        dialog = qobject_cast<QDialog *>(findWidgetOfType("KDEPrivate::KAboutKdeDialog"));
     }
 
     if (dialog) {

@@ -1883,8 +1883,8 @@ msgstr "तमाशा"
 
 #: src/Main.cpp:46
 #, kde-format
-msgid "KDE Screenshot Utility"
-msgstr "KDE स्क्रीनशॉट उपयोगिता"
+msgid "SonicDE Screenshot Utility"
+msgstr "SonicDE स्क्रीनशॉट उपयोगिता"
 
 #: src/Main.cpp:48
 #, fuzzy, kde-format
@@ -1903,17 +1903,6 @@ msgstr "श्रीकान्त् कलवार्"
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "skkalwar999@gmail.com"
-
-#: src/Main.cpp:70
-#, kde-format
-msgid ""
-"On Wayland, Spectacle requires KDE Plasma's KWin compositor, which does not "
-"seem to be available. Use Spectacle on KDE Plasma, or use a different "
-"screenshot tool."
-msgstr ""
-"Wayland इत्यत्र Spectacle इत्यस्य KDE Plasma इत्यस्य KWin compositor इत्यस्य आवश्यकता "
-"वर्तते, यत् उपलब्धं न दृश्यते । KDE Plasma इत्यत्र Spectacle इत्यस्य उपयोगं कुर्वन्तु, अथवा "
-"भिन्नं स्क्रीनशॉट् साधनं उपयुज्यताम् ।"
 
 #: src/OcrManager.cpp:578
 #, kde-format

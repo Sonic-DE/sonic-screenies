@@ -71,11 +71,11 @@
 
         <keywordset>
             <keyword
->KDE</keyword>
+>SonicDE</keyword>
             <keyword
 >spectacle</keyword>
             <keyword
->kdegraphics</keyword>
+>screenies</keyword>
             <keyword
 >posnetek zaslona</keyword>
             <keyword
@@ -93,8 +93,8 @@
 >&spectacle; je aplikacija za zajemanje in urejanje posnetkov zaslona namizja. Zajame lahko slike celotnega namizja, posameznega monitorja, trenutno aktivnega okna, okna, ki je trenutno pod miško, ali pravokotnega območja zaslona. Slike lahko nato označite, natisnete, pošljete drugim aplikacijam za obdelavo ali jih hitro shranite takšne, kot so.</para>
 
         <para
->Prijavite morebitne težave ali zahteve po funkcijah na <ulink url="https://bugs.kde.org/"
->&kde; Sistem za sledenje napakam</ulink
+>Prijavite morebitne težave ali zahteve po funkcijah na <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues"
+>SonicDE Sistem za sledenje napakam</ulink
 >.</para>
     </chapter>
 
@@ -440,7 +440,7 @@
                         <para
 >Možnost <guilabel
 >Zapri po ročnem shranjevanju ali kopiranju</guilabel
-> zapre &spectacle; po kakršnem koli shranjevanju ali kopiranju. Upoštevajte, da se bo kopiran posnetek zaslona ohranil le, če uporabljate upravitelja odložišča, ki sprejema slike. KDE Klipper lahko konfigurirate na ta način tako, da z desno miškino tipko kliknete njegovo ikono, izberete <guilabel
+> zapre &spectacle; po kakršnem koli shranjevanju ali kopiranju. Upoštevajte, da se bo kopiran posnetek zaslona ohranil le, če uporabljate upravitelja odložišča, ki sprejema slike. SonicDE Klipper lahko konfigurirate na ta način tako, da z desno miškino tipko kliknete njegovo ikono, izberete <guilabel
 >Konfiguriraj odložišče...</guilabel
 > in počistite polje <guilabel
 >Prezri slike</guilabel
@@ -472,7 +472,7 @@
                         <para
 >Ponuja običajne elemente menija, opisane v <ulink url="help:/fundamentals/menus.html#menus-help"
 >meniju Pomoč</ulink
-> v &kde; Osnovah.</para>
+> v SonicDE Osnovah.</para>
                     </listitem>
                 </varlistentry>
                 <varlistentry>
@@ -830,8 +830,8 @@
 >Če povlečete posnetek zaslona v okno upravitelja datotek, se prikaže pogovorno okno, kjer lahko uredite ime datoteke in izberete obliko slike, datoteka pa bo vstavljena v dejansko mapo.</para>
 
             <para
->Če povlečete posnetek zaslona v besedilno polje, se vstavi pot do začasno shranjene datoteke. To je uporabno na primer za nalaganje posnetka zaslona prek spletnih obrazcev ali pripenjanje posnetkov zaslona v poročila o napakah na <ulink url="https://bugs.kde.org/"
->&kde;-jevem sledilniku hroščev</ulink
+>Če povlečete posnetek zaslona v besedilno polje, se vstavi pot do začasno shranjene datoteke. To je uporabno na primer za nalaganje posnetka zaslona prek spletnih obrazcev ali pripenjanje posnetkov zaslona v poročila o napakah na <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues"
+>SonicDE-jevem sledilniku hroščev</ulink
 >.</para>
 
             <para

@@ -81,11 +81,11 @@
 
 		<keywordset>
 			<keyword
->KDE</keyword>
+>SonicDE</keyword>
 			<keyword
 >spectacle</keyword>
 			<keyword
->kdegraphics</keyword>
+>screenies</keyword>
 			<keyword
 >fotografia</keyword>
 			<keyword
@@ -104,7 +104,7 @@
 
 	    <para
 >Por favor comunique quaisquer problemas ou pedidos de funcionalidades para o <ulink url="http://bugs.kde.org/"
->Sistema de Registo de Erros do &kde;</ulink
+>Sistema de Registo de Erros do SonicDE</ulink
 >.</para>
 	</chapter>
 
@@ -230,7 +230,7 @@
 >&Ctrl;&Shift;<keycap
 >S</keycap
 ></keycombo
->). Isto abre a janela normal de gravação do &kde;, onde poderá escolher o nome do ficheiro, a localização da pasta e o formato com que deseja gravar a imagem nova. Poderá editar o nome do ficheiro para algo que desejar, incluindo o nome de uma fotografia gravada anteriormente. Também poderá seleccionar a opção <guimenuitem
+>). Isto abre a janela normal de gravação do SonicDE, onde poderá escolher o nome do ficheiro, a localização da pasta e o formato com que deseja gravar a imagem nova. Poderá editar o nome do ficheiro para algo que desejar, incluindo o nome de uma fotografia gravada anteriormente. Também poderá seleccionar a opção <guimenuitem
 >Gravar...</guimenuitem
 > (<keycombo action="simul"
 >&Ctrl;<keycap
@@ -410,7 +410,7 @@
                                             <para
 >Este botão dá-lhe os itens de menu comuns que estão descritos no <ulink url="help:/fundamentals/ui.html#menus-help"
 >Menu de Ajuda</ulink
-> dos Fundamentos do &kde;.</para>
+> dos Fundamentos do SonicDE.</para>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
@@ -558,8 +558,8 @@
 >Se arrastar uma fotografia para uma janela de gestão de ficheiros, irá aparecer uma janela onde poderá modificar o nome do ficheiro e seleccionar o formato da imagem, sendo o ficheiro depois gravado na pasta respectiva.</para>
 
 			<para
->Se arrastar a fotografia para um campo de texto, será introduzida a localização do ficheiro temporário gravado. Isto é útil, por exemplo, para enviar uma imagem em formulários Web ou para anexar as fotografias nos relatórios de erros no <ulink url="https://bugs.kde.org/"
->gestor de erros do &kde;</ulink
+>Se arrastar a fotografia para um campo de texto, será introduzida a localização do ficheiro temporário gravado. Isto é útil, por exemplo, para enviar uma imagem em formulários Web ou para anexar as fotografias nos relatórios de erros no <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues"
+>gestor de erros do SonicDE</ulink
 >.</para>
 
 			<para

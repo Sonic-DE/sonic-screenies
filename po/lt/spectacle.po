@@ -1862,8 +1862,8 @@ msgstr "Spectacle"
 
 #: src/Main.cpp:46
 #, kde-format
-msgid "KDE Screenshot Utility"
-msgstr "KDE ekrano kopijų darymo programa"
+msgid "SonicDE Screenshot Utility"
+msgstr "SonicDE ekrano kopijų darymo programa"
 
 #: src/Main.cpp:48
 #, kde-format
@@ -1881,17 +1881,6 @@ msgstr "Mindaugas Baranauskas, Moo"
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "opensuse.lietuviu.kalba@gmail.com, <>"
-
-#: src/Main.cpp:70
-#, kde-format
-msgid ""
-"On Wayland, Spectacle requires KDE Plasma's KWin compositor, which does not "
-"seem to be available. Use Spectacle on KDE Plasma, or use a different "
-"screenshot tool."
-msgstr ""
-"Wayland aplinkoje, Spectacle reikalauja KDE Plasma KWin kompozitoriaus, "
-"kuris, atrodo, nėra prieinamas. Naudokite Spectacle programą KDE Plasma "
-"aplinkoje arba naudokite kitą ekrano kopijos įrankį."
 
 #: src/OcrManager.cpp:578
 #, kde-format

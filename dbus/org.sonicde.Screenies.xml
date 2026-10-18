@@ -1,0 +1,51 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<!-- SPDX-FileCopyrightText: 2026 SonicDE contributors
+     SPDX-License-Identifier: LGPL-2.0-or-later -->
+<node>
+  <interface name="org.sonicde.Screenies">
+    <method name="FullScreen">
+      <arg name="includeMousePointer" type="i" direction="in"/>
+      <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+    </method>
+    <method name="CurrentScreen">
+      <arg name="includeMousePointer" type="i" direction="in"/>
+      <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+    </method>
+    <method name="ActiveWindow">
+      <arg name="includeWindowDecorations" type="i" direction="in"/>
+      <arg name="includeMousePointer" type="i" direction="in"/>
+      <arg name="includeWindowShadow" type="i" direction="in"/>
+      <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+    </method>
+    <method name="WindowUnderCursor">
+      <arg name="includeWindowDecorations" type="i" direction="in"/>
+      <arg name="includeMousePointer" type="i" direction="in"/>
+      <arg name="includeWindowShadow" type="i" direction="in"/>
+      <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+    </method>
+    <method name="RectangularRegion">
+      <arg name="includeMousePointer" type="i" direction="in"/>
+      <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+    </method>
+    <method name="RecordRegion">
+      <arg name="includeMousePointer" type="i" direction="in"/>
+      <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+    </method>
+    <method name="RecordScreen">
+      <arg name="includeMousePointer" type="i" direction="in"/>
+      <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+    </method>
+    <method name="RecordWindow">
+      <arg name="includeMousePointer" type="i" direction="in"/>
+      <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+    </method>
+    <method name="OpenWithoutScreenshot">
+      <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+    </method>
+    <signal name="ScreenshotTaken"><arg name="fileName" type="s"/></signal>
+    <signal name="ScreenshotFailed"><arg name="message" type="s"/></signal>
+    <signal name="RecordingTaken"><arg name="fileName" type="s"/></signal>
+    <signal name="RecordingFailed"><arg name="message" type="s"/></signal>
+  </interface>
+</node>

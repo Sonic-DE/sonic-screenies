@@ -1844,8 +1844,8 @@ msgstr "Spectacle"
 
 #: src/Main.cpp:46
 #, kde-format
-msgid "KDE Screenshot Utility"
-msgstr "KDE:n kuvakaappaustyökalu"
+msgid "SonicDE Screenshot Utility"
+msgstr "SonicDE:n kuvakaappaustyökalu"
 
 #: src/Main.cpp:48
 #, kde-format
@@ -1863,17 +1863,6 @@ msgstr "Lasse Liehu, Tommi Nieminen, Kimmo Kujansuu"
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "lasse.liehu@gmail.com, translator@legisign.org, mrkujansuu@gmail.com"
-
-#: src/Main.cpp:70
-#, kde-format
-msgid ""
-"On Wayland, Spectacle requires KDE Plasma's KWin compositor, which does not "
-"seem to be available. Use Spectacle on KDE Plasma, or use a different "
-"screenshot tool."
-msgstr ""
-"Waylandissä Spectacle vaatii KDE Plasman KWin-koostimen, joka ei näyttäisi "
-"olevan käytettävissä. Käytä Spectaclea KDE Plasmassa tai valitse toinen "
-"ruutukaappaustyökalu."
 
 #: src/OcrManager.cpp:578
 #, kde-format

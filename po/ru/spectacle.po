@@ -1886,8 +1886,8 @@ msgstr "Spectacle"
 
 #: src/Main.cpp:46
 #, kde-format
-msgid "KDE Screenshot Utility"
-msgstr "Утилита для создания снимков экрана от KDE"
+msgid "SonicDE Screenshot Utility"
+msgstr "Утилита для создания снимков экрана от SonicDE"
 
 #: src/Main.cpp:48
 #, kde-format
@@ -1909,17 +1909,6 @@ msgid "Your emails"
 msgstr ""
 "dyp@perchine.com,skull@kde.ru,victorr2007@yandex.ru,aspotashev@gmail.com,"
 "kissmeoutbeforeugo@gmail.com,mornie@basealt.ru,farline99@yandex.ru"
-
-#: src/Main.cpp:70
-#, kde-format
-msgid ""
-"On Wayland, Spectacle requires KDE Plasma's KWin compositor, which does not "
-"seem to be available. Use Spectacle on KDE Plasma, or use a different "
-"screenshot tool."
-msgstr ""
-"Для работы этого приложения в графическом окружении Wayland необходим "
-"компоновщик рабочего стола KWin. Данное приложение предназначено только для "
-"работы в окружении рабочего стола Plasma."
 
 #: src/OcrManager.cpp:578
 #, kde-format

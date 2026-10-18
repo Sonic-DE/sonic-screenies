@@ -1799,8 +1799,8 @@ msgstr "Spectacle 截图工具"
 
 #: src/Main.cpp:46
 #, kde-format
-msgid "KDE Screenshot Utility"
-msgstr "KDE 屏幕截图工具"
+msgid "SonicDE Screenshot Utility"
+msgstr "SonicDE 屏幕截图工具"
 
 #: src/Main.cpp:48
 #, kde-format
@@ -1823,16 +1823,6 @@ msgstr ""
 "kde-china@kde.org, cjacker@gmail.com, chaofeng111@gmail.com, i@guoyunhe.me, "
 "henry.hu.sh@gmail.com, hh.li99@outlook.com, tangtianbei06@gmail.com, "
 "tysontanx@gmail.com, wengxt@gmail.com"
-
-#: src/Main.cpp:70
-#, kde-format
-msgid ""
-"On Wayland, Spectacle requires KDE Plasma's KWin compositor, which does not "
-"seem to be available. Use Spectacle on KDE Plasma, or use a different "
-"screenshot tool."
-msgstr ""
-"在 Wayland 环境下，Spectacle 需要调用 KDE Plasma 的 KWin 显示特效混合器，但它"
-"并不可用。请在 KDE Plasma 中使用 Spectacle，或者换用另一个截图工具。"
 
 #: src/OcrManager.cpp:578
 #, kde-format

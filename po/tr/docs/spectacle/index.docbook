@@ -71,7 +71,7 @@
 
         <keywordset>
             <keyword
->KDE</keyword>
+>SonicDE</keyword>
             <keyword
 >spectacle</keyword>
             <keyword
@@ -93,8 +93,8 @@
 >&spectacle;, masaüstü ekran görüntülerini yakalamak için kullanılan yalın bir uygulamadır. Tüm masaüstünün görüntüsünü, tek bir monitörü, geçerli etkin pencereyi, farenin altındaki pencereyi veya ekranın dörgen bir bölgesini yakalayabilir. Görseller daha sonra yazdırılabilir, başka uygulamalara gönderilebilir veya dosyaya kaydedilebilir.</para>
 
         <para
->Herhangi bir sorunu veya özellik isteğini lütfen <ulink url="https://bugs.kde.org/"
->&kde;’nin Hata İzleme Sistemi</ulink
+>Herhangi bir sorunu veya özellik isteğini lütfen <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues"
+>SonicDE’nin Hata İzleme Sistemi</ulink
 >’ne bildirin.</para>
     </chapter>
 
@@ -440,7 +440,7 @@
                         <para
 ><guilabel
 >Elle kaydet veya kopyala işleminden sonra çık</guilabel
-> seçeneği, herhangi bir kaydetme veya kopyalama işleminden sonra &spectacle;’dan çıkar. Kopyalanan ekran görüntüsünün yalnızca görüntüleri kabul eden bir pano yöneticisi çalıştırıyorsanız saklanacağını unutmayın. KDE Klipper simgesine sağ tıklayıp <guilabel
+> seçeneği, herhangi bir kaydetme veya kopyalama işleminden sonra &spectacle;’dan çıkar. Kopyalanan ekran görüntüsünün yalnızca görüntüleri kabul eden bir pano yöneticisi çalıştırıyorsanız saklanacağını unutmayın. SonicDE Klipper simgesine sağ tıklayıp <guilabel
 >Panoyu Yapılandır…</guilabel
 > seçeneğini seçerek ve <guilabel
 >Görselleri yok say</guilabel
@@ -470,7 +470,7 @@
 ></term>
                     <listitem>
                         <para
->&kde; Temelleri’nin <ulink url="help:/fundamentals/menus.html#menus-help"
+>SonicDE Temelleri’nin <ulink url="help:/fundamentals/menus.html#menus-help"
 >Yardım Menüsü</ulink
 > bölümünde açıklanan temel menü ögelerini sağlar.</para>
                     </listitem>
@@ -830,8 +830,8 @@
 >Bir ekran görüntüsünü dosya yöneticisi penceresine sürüklerseniz dosya adını düzenleyebileceğiniz ve görsel biçimini seçebileceğiniz bir iletişim kutusu açılır ve sonrasında dosya gerçek klasöre eklenir.</para>
 
             <para
->Ekran görüntüsünü bir metin kutusuna sürüklerseniz geçici olarak kaydedilen dosyanın yolu eklenir. Bu, web formlarına veya <ulink url="https://bugs.kde.org/"
->&kde; hata izleyicisine</ulink
+>Ekran görüntüsünü bir metin kutusuna sürüklerseniz geçici olarak kaydedilen dosyanın yolu eklenir. Bu, web formlarına veya <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues"
+>SonicDE hata izleyicisine</ulink
 > bir ekran görüntüsü eklerken yararlıdır.</para>
 
             <para

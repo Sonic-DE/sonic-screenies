@@ -13,7 +13,7 @@ apps:
       - kde-neon-6
     common-id: org.kde.spectacle.desktop
     desktop: usr/share/applications/org.kde.spectacle.desktop
-    command: usr/bin/spectacle
+    command: usr/bin/sonic-screenies
     plugs:
       - audio-record
       - home
@@ -21,7 +21,15 @@ apps:
 slots:
   session-dbus-interface:
     interface: dbus
+    name: org.sonicde.screenies
+    bus: session
+  legacy-session-dbus-interface:
+    interface: dbus
     name: org.kde.spectacle
+    bus: session
+  legacy-uppercase-session-dbus-interface:
+    interface: dbus
+    name: org.kde.Spectacle
     bus: session
 package-repositories:
   - type: apt

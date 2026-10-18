@@ -37,9 +37,9 @@
         </abstract>
 
         <keywordset>
-            <keyword>KDE</keyword>
+            <keyword>SonicDE</keyword>
             <keyword>spectacle</keyword>
-            <keyword>kdegraphics</keyword>
+            <keyword>screenies</keyword>
             <keyword>screenshot</keyword>
             <keyword>screen capture</keyword>
             <keyword>screen grab</keyword>
@@ -51,7 +51,7 @@
 
         <para>&spectacle; is an application for capturing and editing desktop screenshots. It can capture images of the entire desktop, a single monitor, the currently active window, the window currently under the mouse, or a rectangular region of the screen. The images can then be annotated, printed, sent to other applications for manipulation, or quickly be saved as-is.</para>
 
-        <para>Please report any problems or feature requests to the <ulink url="https://bugs.kde.org/">&kde; Bug Tracking System</ulink>.</para>
+        <para>Please report any problems or feature requests to the <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues">SonicDE issue tracker</ulink>.</para>
     </chapter>
 
     <chapter id="starting">
@@ -186,7 +186,7 @@
                         <para>The <guilabel>Capture the current pop-up only</guilabel> option is only enabled when the <guilabel>Window Under Cursor</guilabel> mode is selected in the <guilabel>Area</guilabel> combo-box. Checking this option captures only the popup menu under the cursor, without its parent window.</para>
                     </listitem>
                     <listitem>
-                        <para>The <guilabel>Quit after manual Save or Copy</guilabel> option will quit &spectacle; after any saving or copying operations. Note that a copied screenshot will only be retained if you are running a clipboard manager that accepts images. KDE Klipper can be configured in this manner by right-clicking on its icon, selecting <guilabel>Configure Clipboard...</guilabel>, and unchecking <guilabel>Ignore images</guilabel>.</para>
+                        <para>The <guilabel>Quit after manual Save or Copy</guilabel> option will quit &spectacle; after any saving or copying operations. Note that a copied screenshot will only be retained if you are running a clipboard manager that accepts images. SonicDE Klipper can be configured in this manner by right-clicking on its icon, selecting <guilabel>Configure Clipboard...</guilabel>, and unchecking <guilabel>Ignore images</guilabel>.</para>
                     </listitem>
                 </itemizedlist>
             </sect2>
@@ -205,7 +205,7 @@
                 <varlistentry>
                     <term><guibutton>Help</guibutton></term>
                     <listitem>
-                        <para>Gives you the common menu items described in the <ulink url="help:/fundamentals/menus.html#menus-help">Help Menu</ulink> of the &kde; Fundamentals.</para>
+                        <para>Gives you the common menu items described in the <ulink url="help:/fundamentals/menus.html#menus-help">Help Menu</ulink> of the SonicDE Fundamentals.</para>
                     </listitem>
                 </varlistentry>
                 <varlistentry>
@@ -397,7 +397,7 @@
 
             <para>If you drag a screenshot into a file manager window, a dialog pops up where you can edit the filename and select the image format and the file will be inserted into the actual folder.</para>
 
-            <para>If you drag the screenshot to a text box, the path to the temporary saved file is inserted. This is useful for example to upload a screenshot through web forms or to attach screenshots into bug reports on the <ulink url="https://bugs.kde.org/">&kde; bugtracker</ulink>.</para>
+            <para>If you drag the screenshot to a text box, the path to the temporary saved file is inserted. This is useful for example to upload a screenshot through web forms or to attach screenshots into bug reports on the <ulink url="https://github.com/Sonic-DE/sonic-screenies/issues">SonicDE issue tracker</ulink>.</para>
 
             <para>This works with all clients that do not pick up the image data, but only look for a &URL; in the dragged mimedata.</para>
         </sect1>

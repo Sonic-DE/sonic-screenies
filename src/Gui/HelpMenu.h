@@ -8,9 +8,12 @@
 
 #include <KHelpMenu>
 
+#include <QPointer>
 #include <QQmlEngine>
 
 #include <memory>
+
+class QDialog;
 
 class HelpMenu : public SpectacleMenu
 {
@@ -36,6 +39,11 @@ private:
     explicit HelpMenu(QWidget *parent = nullptr);
     ~HelpMenu();
     Q_SLOT void onTriggered(QAction *action);
+    Q_SLOT void showAboutSonicDE();
+    Q_SLOT void showAboutApplication();
     const std::unique_ptr<KHelpMenu> kHelpMenu;
+    QPointer<QDialog> m_aboutSonicDEDialog;
+    QPointer<QDialog> m_aboutApplicationDialog;
     friend class HelpMenuSingleton;
+    friend class HelpMenuTest;
 };
