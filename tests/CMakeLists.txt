@@ -129,3 +129,11 @@ ecm_add_test(
         XCB::UTIL
 )
 set_tests_properties(x11_target_selector_test PROPERTIES LABELS "x11;integration")
+
+ecm_add_test(
+    X11WindowCaptureTest.cpp
+    ../src/Platforms/X11/X11WindowCapture.cpp
+    TEST_NAME "x11_window_capture_test"
+    LINK_LIBRARIES Qt::Test Qt::Gui XCB::IMAGE XCB::COMPOSITE XCB::SHAPE
+)
+set_tests_properties(x11_window_capture_test PROPERTIES LABELS "x11;integration;security")

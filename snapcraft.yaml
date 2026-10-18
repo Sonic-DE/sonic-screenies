@@ -40,6 +40,8 @@ parts:
     source: .
     source-type: local
     build-packages:
+      - libxcb-composite0-dev
+      - libxcb-shape0-dev
       - libxcb-cursor-dev
       - libxcb-image0-dev
       - libxcb-randr0-dev
@@ -51,6 +53,8 @@ parts:
       - libswscale-dev
       - libpulse-dev
     stage-packages:
+      - libxcb-composite0
+      - libxcb-shape0
       - libxcb-image0
       - libxcb-cursor0
       - libxcb-randr0
