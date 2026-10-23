@@ -153,6 +153,41 @@ set_tests_properties(x11_window_capture_test PROPERTIES LABELS "x11;integration;
 if(BUILD_TESTING)
     find_program(DBUS_RUN_SESSION_EXECUTABLE dbus-run-session)
     if(DBUS_RUN_SESSION_EXECUTABLE)
+        add_executable(kwin_window_capture_test KWinWindowCaptureTest.cpp
+            ../src/Platforms/ImagePlatform.cpp ../src/Platforms/ImagePlatformXcb.cpp
+            ../src/Platforms/X11/KWinWindowCapture.cpp ../src/Platforms/X11/X11WindowCapture.cpp
+            ../src/Platforms/X11/X11TargetSelector.cpp)
+        target_link_libraries(kwin_window_capture_test PRIVATE Qt::Test Qt::Widgets Qt::GuiPrivate Qt::Qml Qt::DBus Qt::Concurrent
+            KF6::WindowSystem KF6::I18n XCB::IMAGE XCB::COMPOSITE XCB::SHAPE XCB::XFIXES XCB::CURSOR XCB::UTIL XCB::RANDR)
+        target_compile_definitions(kwin_window_capture_test PRIVATE TEST_DESKTOP_FILE="${PROJECT_BINARY_DIR}/desktop/org.kde.spectacle.desktop")
+        set(_kwin_capture_command "${DBUS_RUN_SESSION_EXECUTABLE}" -- "$<TARGET_FILE:kwin_window_capture_test>")
+        set(_kwin_capture_environment "SCREENIES_TEST_PRIVATE_BUS=1;QT_QPA_PLATFORM=offscreen")
+        find_program(XVFB_RUN_EXECUTABLE xvfb-run)
+        if(XVFB_RUN_EXECUTABLE)
+            list(PREPEND _kwin_capture_command "${XVFB_RUN_EXECUTABLE}" --auto-servernum)
+            set(_kwin_capture_environment "SCREENIES_TEST_PRIVATE_BUS=1;SCREENIES_TEST_PRIVATE_X11=1;QT_QPA_PLATFORM=xcb;QT_SCALE_FACTOR=1")
+        endif()
+        add_test(NAME kwin_window_capture_test COMMAND ${_kwin_capture_command})
+        set_tests_properties(kwin_window_capture_test PROPERTIES LABELS "dbus;decorations;security"
+            ENVIRONMENT "${_kwin_capture_environment}" TIMEOUT 30)
+
+        set(SCREENIES_TEST_COMPOSITOR "" CACHE FILEPATH "SonicWin executable for the real translucent-frame capture regression test")
+        if(SCREENIES_TEST_COMPOSITOR)
+            find_package(Python3 REQUIRED COMPONENTS Interpreter)
+            find_program(XVFB_EXECUTABLE Xvfb REQUIRED)
+            add_executable(real_compositor_capture_test RealCompositorCaptureTest.cpp ../src/Platforms/X11/X11WindowCapture.cpp)
+            target_link_libraries(real_compositor_capture_test PRIVATE Qt::Widgets Qt::DBus KF6::WindowSystem XCB::IMAGE XCB::COMPOSITE XCB::SHAPE)
+            target_compile_definitions(real_compositor_capture_test PRIVATE SCREENIES_BINARY="$<TARGET_FILE:spectacle>")
+            add_dependencies(real_compositor_capture_test spectacle)
+            add_test(NAME real_compositor_capture_test COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/real_compositor_capture.py"
+                --compositor "${SCREENIES_TEST_COMPOSITOR}" --screenies "$<TARGET_FILE:spectacle>"
+                --probe "$<TARGET_FILE:real_compositor_capture_test>" --xvfb "${XVFB_EXECUTABLE}"
+                --dbus-run-session "${DBUS_RUN_SESSION_EXECUTABLE}"
+                --dbus-config "${CMAKE_CURRENT_SOURCE_DIR}/real_compositor_capture_dbus.conf"
+                --output "${CMAKE_CURRENT_BINARY_DIR}/real-compositor-capture")
+            set_tests_properties(real_compositor_capture_test PROPERTIES TIMEOUT 60 LABELS "x11;real-compositor;decorations;security")
+        endif()
+
         add_executable(dbus_activation_test DBusActivationTest.cpp)
         target_link_libraries(dbus_activation_test PRIVATE Qt::Test Qt::DBus)
         target_compile_definitions(dbus_activation_test PRIVATE

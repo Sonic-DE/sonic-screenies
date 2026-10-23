@@ -204,7 +204,7 @@ DBusActivatable=true
 X-DBUS-StartupType=Unique
 X-DBUS-ServiceName=org.sonicde.screenies
 X-KDE-Shortcuts=Print,Meta+Shift+S
-X-KDE-DBUS-Restricted-Interfaces=
+X-KDE-DBUS-Restricted-Interfaces=org.kde.KWin.ScreenShot2
 
 
 [Desktop Action FullScreenScreenShot]

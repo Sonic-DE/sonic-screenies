@@ -71,7 +71,8 @@ private:
 
     void grabAllScreens(bool includePointer, bool crop = false);
     void grabCurrentScreen(bool includePointer);
-    void grabApplicationWindow(xcb_window_t window, bool includePointer, bool includeDecorations);
+    void grabApplicationWindow(xcb_window_t window, bool includePointer, bool includeDecorations, bool includeShadow);
+    void grabCompositorWindows(const QList<xcb_window_t>& windows, xcb_window_t titleWindow, bool includePointer, bool includeDecorations, bool includeShadow);
     void grabActiveWindow(bool includePointer, bool includeDecorations, bool includeShadow);
     void grabWindowUnderCursor(bool includePointer, bool includeDecorations, bool includeShadow);
     void grabTransientWithParent(bool includePointer, bool includeDecorations, bool includeShadow);
@@ -92,4 +93,5 @@ private:
     bool m_pendingIncludeShadow = true;
 
     GrabModes m_grabModes;
+    quint64 m_windowCaptureGeneration = 0;
 };
