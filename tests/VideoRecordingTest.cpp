@@ -3,11 +3,13 @@
  */
 #include "Platforms/VideoPlatform.h"
 #include "Platforms/VideoPlatformX11.h"
+#include "Platforms/X11/X11Connection.h"
+#include "Platforms/X11/X11FrameGrabWorker.h"
 
 #include <QFileInfo>
+#include <QPointer>
 #include <QProcess>
 #include <QRegularExpression>
-#include <QScreen>
 #include <QSignalSpy>
 #include <QStandardPaths>
 #include <QTemporaryDir>
@@ -16,6 +18,17 @@
 using namespace Qt::StringLiterals;
 
 namespace {
+QRect nativeScreenRect()
+{
+    X11::Connection connection;
+    if (!connection.isValid()) {
+        return {};
+    }
+    X11::ReplyPtr geometry(xcb_get_geometry_reply(connection.handle(), xcb_get_geometry(connection.handle(), connection.rootWindow()), nullptr));
+    const auto root = geometry.get<xcb_get_geometry_reply_t>();
+    return root ? QRect(0, 0, root->width, root->height) : QRect();
+}
+
 void verifyEncodedOutput(const QUrl& output, const QByteArray& expectedCodec, const QByteArray& expectedContainer)
 {
     QVERIFY(output.isLocalFile());
@@ -67,6 +80,10 @@ private Q_SLOTS:
     void recordsX11ScreenToWebM();
     void recordsSelectedRegion();
     void recordsAnimatedGif();
+    void intentionalCaptureErrorMayDeleteWorker_data();
+    void intentionalCaptureErrorMayDeleteWorker();
+    void intentionalCaptureError_data();
+    void intentionalCaptureError();
 };
 
 void VideoRecordingTest::formatHelpers()
@@ -76,6 +93,93 @@ void VideoRecordingTest::formatHelpers()
     QCOMPARE(VideoPlatform::formatForExtension(u"WEBM"_s), VideoPlatform::WebM_VP9);
     QVERIFY(VideoPlatform::formatSupportsAudio(VideoPlatform::WebM_VP9));
     QVERIFY(!VideoPlatform::formatSupportsAudio(VideoPlatform::Gif));
+}
+
+void VideoRecordingTest::intentionalCaptureErrorMayDeleteWorker_data()
+{
+    QTest::addColumn<bool>("queryGeometry");
+    QTest::newRow("geometry-error") << true;
+    QTest::newRow("get-image-error") << false;
+}
+
+void VideoRecordingTest::intentionalCaptureErrorMayDeleteWorker()
+{
+    if (QGuiApplication::platformName() != u"xcb"_s) {
+        QSKIP("Requires a private X11 test display");
+    }
+    QFETCH(bool, queryGeometry);
+    X11::Connection connection;
+    QVERIFY(connection.isValid());
+    QString failure;
+    QObject owner;
+    auto* worker = new X11::FrameGrabWorker(&owner);
+    QPointer<X11::FrameGrabWorker> alive(worker);
+    QSignalSpy stopped(worker, &X11::FrameGrabWorker::producerStopped);
+    connect(worker, &X11::FrameGrabWorker::producerFailed, &owner, [&](const QString& message) {
+        failure = message;
+        delete worker; // Match the controller's synchronous failure cleanup.
+    });
+    X11::FrameGrabOptions options;
+    options.source = X11::FrameGrabOptions::Source::Window;
+    options.windowId = xcb_generate_id(connection.handle()); // Deliberately never create this window.
+    if (!queryGeometry) {
+        options.targetRect = QRect(0, 0, 64, 64);
+    }
+    worker->setOptions(options);
+    worker->startWorker();
+    worker->startCapture();
+    QTRY_VERIFY_WITH_TIMEOUT(alive.isNull(), 3000);
+    QVERIFY(!failure.isEmpty());
+    QCOMPARE(stopped.size(), 1);
+}
+
+void VideoRecordingTest::intentionalCaptureError_data()
+{
+    QTest::addColumn<bool>("animated");
+    QTest::addColumn<bool>("badDisplay");
+    QTest::newRow("qt-invalid-rectangle") << false << false;
+    QTest::newRow("qt-display-connection-failure") << false << true;
+    QTest::newRow("gif-invalid-rectangle") << true << false;
+    QTest::newRow("gif-display-connection-failure") << true << true;
+}
+
+void VideoRecordingTest::intentionalCaptureError()
+{
+    if (QGuiApplication::platformName() != u"xcb"_s) {
+        QSKIP("Requires a private X11 test display");
+    }
+    QFETCH(bool, animated);
+    QFETCH(bool, badDisplay);
+    Spectacle::VideoPlatformX11 platform;
+    const auto formats = platform.supportedFormats();
+    const auto qtFormat = formats.testFlag(VideoPlatform::MP4_H264) ? VideoPlatform::MP4_H264 : VideoPlatform::WebM_VP9;
+    const auto format = animated ? VideoPlatform::Gif : qtFormat;
+    if (!formats.testFlag(format)) {
+        QSKIP("The required video encoder is unavailable");
+    }
+    const auto root = nativeScreenRect();
+    QVERIFY(!root.isEmpty());
+    const QRect rect(badDisplay ? 0 : root.width() - 32, 0, 64, 64);
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    const auto output = QUrl::fromLocalFile(directory.filePath(u"failure."_s + VideoPlatform::extensionForFormat(format)));
+    QSignalSpy failed(&platform, &VideoPlatform::recordingFailed);
+    QSignalSpy saved(&platform, &VideoPlatform::recordingSaved);
+    QSignalSpy canceled(&platform, &VideoPlatform::recordingCanceled);
+    const auto display = qgetenv("DISPLAY");
+    if (badDisplay) {
+        qputenv("DISPLAY", "not-a-display");
+    }
+    platform.startRecording(output, VideoPlatform::Region, {{u"rect"_s, rect}}, false);
+    if (badDisplay) {
+        qputenv("DISPLAY", display);
+    }
+    QTRY_COMPARE_WITH_TIMEOUT(failed.size(), 1, 5000);
+    QVERIFY(failed.first().first().toString().contains(badDisplay ? u"Could not connect to the X11 display"_s : u"X11 returned an empty video frame"_s));
+    QVERIFY(!platform.isBusy());
+    QCOMPARE(saved.size(), 0);
+    QCOMPARE(canceled.size(), 0);
+    QVERIFY(!QFileInfo::exists(output.toLocalFile()));
 }
 
 void VideoRecordingTest::recordsX11ScreenToWebM()
@@ -106,9 +210,11 @@ void VideoRecordingTest::recordsX11ScreenToWebM()
     QVERIFY(failedSpy.isValid());
     QVERIFY(canceledSpy.isValid());
 
-    const auto screen = QGuiApplication::primaryScreen();
-    QVERIFY(screen);
-    platform.startRecording(output, VideoPlatform::Screen, {{u"rect"_s, screen->geometry()}}, false);
+    // Explicit capture rectangles are native X11 coordinates, not Qt's
+    // potentially different logical screen geometry.
+    const auto screen = nativeScreenRect();
+    QVERIFY(!screen.isEmpty());
+    platform.startRecording(output, VideoPlatform::Screen, {{u"rect"_s, screen}}, false);
     QTRY_VERIFY_WITH_TIMEOUT(platform.isRecording() || !failedSpy.isEmpty(), 10000);
     if (!failedSpy.isEmpty()) {
         QFAIL(qPrintable(failedSpy.first().first().toString()));
