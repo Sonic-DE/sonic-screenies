@@ -363,6 +363,9 @@ bool VideoPlatformX11::startEncoder(const QUrl& fileUrl, const QRect& captureRec
         }
     }
     m_frameWorker->startWorker();
+    if (!m_frameWorker) {
+        return false; // A synchronous startup failure already reset the session.
+    }
     m_frameWorker->startCapture();
     return true;
 }
@@ -411,6 +414,9 @@ bool VideoPlatformX11::startAnimatedEncoder(const QUrl& fileUrl, const QRect& ca
     });
     setRecordingMode(m_activeMode);
     m_frameWorker->startWorker();
+    if (!m_frameWorker) {
+        return false; // A synchronous startup failure already reset the session.
+    }
     m_frameWorker->startCapture();
     return true;
 }

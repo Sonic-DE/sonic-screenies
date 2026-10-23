@@ -103,9 +103,11 @@ void FrameGrabWorker::timerTick()
     xcb_drawable_t drawable = m_options.source == FrameGrabOptions::Source::Window && m_options.windowId
         ? m_options.windowId
         : m_connection.rootWindow();
+    // Failure receivers may destroy this worker synchronously. Stop first,
+    // then emit the error as the last operation on each failure path.
     if (drawable == XCB_NONE) {
-        Q_EMIT producerFailed(u"The X11 capture drawable is unavailable"_s);
         stopCapture();
+        Q_EMIT producerFailed(u"The X11 capture drawable is unavailable"_s);
         return;
     }
 
@@ -115,8 +117,8 @@ void FrameGrabWorker::timerTick()
         ReplyPtr geometry(xcb_get_geometry_reply(connection, cookie, nullptr));
         const auto reply = geometry.get<xcb_get_geometry_reply_t>();
         if (!reply || reply->width == 0 || reply->height == 0) {
-            Q_EMIT producerFailed(u"Could not determine the X11 capture geometry"_s);
             stopCapture();
+            Q_EMIT producerFailed(u"Could not determine the X11 capture geometry"_s);
             return;
         }
         rect = QRect(0, 0, reply->width, reply->height);
@@ -134,8 +136,8 @@ void FrameGrabWorker::timerTick()
         if (image) {
             xcb_image_destroy(image);
         }
-        Q_EMIT producerFailed(u"X11 returned an empty video frame"_s);
         stopCapture();
+        Q_EMIT producerFailed(u"X11 returned an empty video frame"_s);
         return;
     }
 
