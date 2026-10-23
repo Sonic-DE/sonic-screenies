@@ -153,6 +153,8 @@ void X11WindowCaptureTest::preservesAlphaAndExcludesOtherWindows()
 
 void X11WindowCaptureTest::decorationsDoNotFillTransparentClient()
 {
+    // This fixture paints decoration pixels into an X11 frame. SonicWin's
+    // scene-rendered decorations are covered by KWinWindowCaptureTest instead.
     Window frame(connection, screen, screen->root, QRect(100, 120, 90, 70), false);
     QVERIFY(frame.valid);
     frame.fill(0x0000ff, QSize(90, 70));

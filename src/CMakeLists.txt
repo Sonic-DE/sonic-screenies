@@ -65,6 +65,7 @@ target_sources(spectacle PRIVATE
     Platforms/X11/X11ScreenModel.cpp
     Platforms/X11/X11TargetSelector.cpp
     Platforms/X11/X11WindowCapture.cpp
+    Platforms/X11/KWinWindowCapture.cpp
     RecordingModeModel.cpp
     ShortcutActions.cpp
     SpectacleCore.cpp
@@ -86,6 +87,7 @@ target_sources(spectacle PRIVATE
     Platforms/X11/X11ScreenModel.h
     Platforms/X11/X11TargetSelector.h
     Platforms/X11/X11WindowCapture.h
+    Platforms/X11/KWinWindowCapture.h
     PlatformOutput.h
     PlatformStartup.h
 )

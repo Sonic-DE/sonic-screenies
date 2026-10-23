@@ -6,6 +6,7 @@
 
 #include "ImagePlatformXcb.h"
 #include "ImageMetaData.h"
+#include "Platforms/X11/KWinWindowCapture.h"
 #include "Platforms/X11/X11TargetSelector.h"
 #include "Platforms/X11/X11WindowCapture.h"
 
@@ -22,6 +23,8 @@
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusInterface>
+#include <QDBusReply>
+#include <QFutureWatcher>
 #include <QGraphicsDropShadowEffect>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
@@ -30,8 +33,9 @@
 #include <QSet>
 #include <QStack>
 #include <QTimer>
-#include <private/qtx11extras_p.h>
+#include <QtConcurrentRun>
 #include <QtMath>
+#include <private/qtx11extras_p.h>
 
 #include <KLocalizedString>
 #include <KWindowInfo>
@@ -178,6 +182,7 @@ ImagePlatform::ShutterModes ImagePlatformXcb::supportedShutterModes() const
 
 void ImagePlatformXcb::doGrab(ShutterMode shutterMode, GrabMode grabMode, bool includePointer, bool includeDecorations, bool includeShadow)
 {
+    ++m_windowCaptureGeneration;
     switch (shutterMode) {
     case ShutterMode::Immediate: {
         doGrabNow(grabMode, includePointer, includeDecorations, includeShadow);
@@ -510,8 +515,100 @@ void ImagePlatformXcb::grabCurrentScreen(bool includePointer)
     grabAllScreens(includePointer);
 }
 
-void ImagePlatformXcb::grabApplicationWindow(xcb_window_t window, bool includePointer, bool includeDecorations)
+namespace {
+bool hasCompositorCapture()
 {
+    const auto interface = QDBusConnection::sessionBus().interface();
+    return interface && (interface->isServiceRegistered(QStringLiteral("org.kde.KWin.ScreenShot2")).value() || interface->isServiceRegistered(QStringLiteral("org.kde.KWin")).value());
+}
+}
+
+void ImagePlatformXcb::grabCompositorWindows(const QList<xcb_window_t>& windows, xcb_window_t titleWindow,
+    bool includePointer, bool includeDecorations, bool includeShadow)
+{
+    QList<QPair<xcb_window_t, QPoint>> targets;
+    for (const auto window : windows) {
+        const KWindowInfo info(window, NET::WMGeometry | NET::WMFrameExtents);
+        if (!info.valid()) {
+            Q_EMIT newScreenshotFailed(i18n("The selected window is no longer available."));
+            return;
+        }
+        targets.append({window, (includeDecorations ? info.frameGeometry() : info.geometry()).topLeft()});
+    }
+    if (targets.isEmpty()) {
+        Q_EMIT newScreenshotFailed(i18n("No application window was selected."));
+        return;
+    }
+    const bool family = targets.size() > 1;
+    const auto generation = m_windowCaptureGeneration;
+    struct Result {
+        QImage image;
+        QPoint position;
+        QString error;
+    };
+    auto* watcher = new QFutureWatcher<Result>(this);
+    connect(watcher, &QFutureWatcher<Result>::finished, this,
+        [this, watcher, generation, titleWindow, family, includePointer, includeShadow]() {
+            auto result = watcher->result();
+            watcher->deleteLater();
+            if (generation != m_windowCaptureGeneration) {
+                return;
+            }
+            if (!result.error.isEmpty()) {
+                Q_EMIT newScreenshotFailed(i18n("Could not capture the selected window: %1", result.error));
+                return;
+            }
+            if (family && includeShadow) {
+                result.image = addDropShadow(result.image);
+                result.position -= QPoint(20, 20);
+            }
+            if (family && includePointer) {
+                result.image = blendCursorImage(result.image, QRect(result.position, result.image.size()));
+            }
+            setWindowTitle(result.image, titleWindow);
+            result.image.setDevicePixelRatio(qGuiApp->devicePixelRatio());
+            Q_EMIT newScreenshotTaken(result.image);
+        });
+    watcher->setFuture(QtConcurrent::run([targets, family, includePointer, includeDecorations, includeShadow]() -> Result {
+        QList<X11::WindowImage> images;
+        QRect bounds;
+        for (const auto& target : targets) {
+            auto result = X11::captureKWinWindow(target.first, includeDecorations, !family && includeShadow, !family && includePointer);
+            if (!result.error.isEmpty()) {
+                return {{}, {}, result.error};
+            }
+            if (!family) {
+                return {result.image, target.second, {}};
+            }
+            bounds |= QRect(target.second, result.image.size());
+            images.append({result.image, target.second});
+        }
+        if (bounds.width() <= 0 || bounds.height() <= 0 || bounds.width() > 32768 || bounds.height() > 32768
+            || quint64(bounds.width()) * quint64(bounds.height()) * 4 > 256 * 1024 * 1024) {
+            return {{}, {}, QStringLiteral("Window-family screenshot exceeds the size limit")};
+        }
+        QImage image(bounds.size(), QImage::Format_ARGB32_Premultiplied);
+        if (image.isNull()) {
+            return {{}, {}, QStringLiteral("Could not allocate the window-family screenshot")};
+        }
+        image.fill(Qt::transparent);
+        QPainter painter(&image);
+        for (const auto& capture : std::as_const(images)) {
+            painter.drawImage(capture.position - bounds.topLeft(), capture.image);
+        }
+        painter.end();
+        return {image, bounds.topLeft(), {}};
+    }));
+}
+
+void ImagePlatformXcb::grabApplicationWindow(xcb_window_t window, bool includePointer, bool includeDecorations, bool includeShadow)
+{
+    if (hasCompositorCapture()) {
+        // SonicWin draws decorations in its scene, not the XComposite frame
+        // pixmap. Ask it to render only this window; never crop the desktop.
+        grabCompositorWindows({window}, window, includePointer, includeDecorations, includeShadow);
+        return;
+    }
     auto image = getWindowImage(window, includePointer, includeDecorations);
     if (image.isNull()) {
         Q_EMIT newScreenshotFailed(i18n("Could not capture the selected window without including desktop content."));
@@ -523,12 +620,12 @@ void ImagePlatformXcb::grabApplicationWindow(xcb_window_t window, bool includePo
 
 void ImagePlatformXcb::grabActiveWindow(bool includePointer, bool includeDecorations, bool includeShadow)
 {
-    grabApplicationWindow(KX11Extras::activeWindow(), includePointer, includeDecorations);
+    grabApplicationWindow(KX11Extras::activeWindow(), includePointer, includeDecorations, includeShadow);
 }
 
 void ImagePlatformXcb::grabWindowUnderCursor(bool includePointer, bool includeDecorations, bool includeShadow)
 {
-    grabApplicationWindow(getWindowUnderCursor(), includePointer, includeDecorations);
+    grabApplicationWindow(getWindowUnderCursor(), includePointer, includeDecorations, includeShadow);
 }
 
 void ImagePlatformXcb::grabTransientWithParent(bool includePointer, bool includeDecorations, bool includeShadow)
@@ -581,6 +678,11 @@ void ImagePlatformXcb::grabTransientWithParent(bool includePointer, bool include
         }
     }
 
+    if (hasCompositorCapture()) {
+        grabCompositorWindows(familyOrder, window, includePointer, includeDecorations, includeShadow);
+        return;
+    }
+
     // Composite only isolated surfaces from this transient family. Cropping a
     // desktop screenshot would disclose unrelated windows through transparent
     // areas and through gaps between dialogs.
@@ -629,6 +731,7 @@ bool ImagePlatformXcb::isTargetSelectionActive() const
 
 void ImagePlatformXcb::cancelTargetSelection()
 {
+    ++m_windowCaptureGeneration;
     if (isTargetSelectionActive()) {
         m_screenshotTargetSelector->cancel(u"Screenshot target selection canceled"_s);
     }
@@ -680,10 +783,10 @@ void ImagePlatformXcb::onTargetSelected(const X11::Target& target)
 
     if (grabMode == GrabMode::TransientWithParent) {
         // Capture the transient family of the selected window directly.
-        grabApplicationWindow(windowId, includePointer, includeDecorations);
+        grabApplicationWindow(windowId, includePointer, includeDecorations, includeShadow);
     } else {
         // WindowUnderCursor: capture the selected window directly.
-        grabApplicationWindow(windowId, includePointer, includeDecorations);
+        grabApplicationWindow(windowId, includePointer, includeDecorations, includeShadow);
     }
 }
 
