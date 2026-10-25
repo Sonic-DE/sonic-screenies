@@ -1,4 +1,5 @@
 /* SPDX-FileCopyrightText: 2023 Noah Davis <noahadvs@gmail.com>
+ * SPDX-FileCopyrightText: 2026 SonicDE contributors
  * SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
@@ -13,7 +14,9 @@
 using namespace Qt::StringLiterals;
 
 static quint32 s_plasmaVersion = 0;
-static const auto s_plasmashellService = u"org.kde.plasmashell"_s;
+static const auto s_plasmashellService = qgetenv("XDG_CURRENT_DESKTOP").split(':').contains(QByteArrayLiteral("SonicDE"))
+    ? u"org.sonicde.sonicshell"_s
+    : u"org.kde.plasmashell"_s;
 
 quint32 PlasmaVersion::get()
 {
