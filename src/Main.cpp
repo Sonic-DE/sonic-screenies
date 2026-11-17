@@ -104,6 +104,7 @@ int main(int argc, char **argv)
     QObject::connect(&service, &KDBusService::activateRequested, spectacleCore, &SpectacleCore::activate);
     QObject::connect(&service, &KDBusService::activateActionRequested, spectacleCore, &SpectacleCore::activateAction);
     QObject::connect(qApp, &QApplication::aboutToQuit, Settings::self(), &Settings::save);
+    QObject::connect(spectacleCore, &SpectacleCore::allDone, &app, &QCoreApplication::quit, Qt::QueuedConnection);
     QObject::connect(spectacleCore, &SpectacleCore::applicationQuitRequested, &app, &QCoreApplication::quit, Qt::QueuedConnection);
 
     auto* dbusAdapter = new SpectacleDBusAdapter(spectacleCore);
@@ -126,6 +127,9 @@ int main(int argc, char **argv)
                                  << QDBusConnection::sessionBus().lastError().message();
         }
     }
+
+    // KDBusService only emits activateRequested for later launches, so the first one starts itself.
+    spectacleCore->activate(app.arguments(), QDir::currentPath());
 
     return app.exec();
 }

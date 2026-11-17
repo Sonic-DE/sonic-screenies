@@ -2,6 +2,10 @@
 
 Screenies is SonicDE's screenshot and screen recording app: capture your whole screen, a window or a region, annotate it and share it.
 
+## Unreleased
+
+- Starting Screenies from a terminal or launcher with a capture option, such as `sonic-screenies -r`, takes the screenshot again instead of waiting with nothing on screen.
+
 ## 6.8.2 (2026-11-10)
 
 - Now presents itself with SonicDE names and identity throughout the desktop.
